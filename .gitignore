@@ -1,0 +1,10 @@
+.vscode/
+.DS_Store
+
+*.out
+*.log
+
+scanoss-api
+test-scanoss-api
+*.o
+
