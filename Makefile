@@ -54,6 +54,9 @@ run-valgrind: $(TARGET)
 	
 clean:
 	rm -f wayuu/*.o src/*.o src/**/*.o test/*.o test/**/*.o $(TARGET) test-$(TARGET)
+
+install: $(TARGET)
+	cp $(TARGET) /usr/bin
 	
 
 

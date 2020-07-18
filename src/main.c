@@ -77,7 +77,6 @@ int main(int argc, char *argv[])
 		}
 	}
 
-
 	// API Bootstrapping logic.
 	bootstrap_api();
 

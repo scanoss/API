@@ -13,9 +13,20 @@ SCANOSS doesn't need any external libraries other than standard Linux GNU extens
 - `make`: Builds the `scanoss-api` binary.
 - `make test`: Executes the unit tests. 
 
-## Running tests
+# Installation
 
-ScanOSS API uses the very simple [**snow**](https://github.com/mortie/snow) for unit tests . 
+Run `make install` and the `scanoss-api` binary will be copied to `/usr/bin` by default. 
+
+If you are using Linux you can do a simple systemd script to run the API on startup. Otherwise you can run the binary. 
+
+## Default Values
+- Default port is 4443
+- Default API Root folder is `/var/lib/scanoss`
+- Default bind IP Address is `127.0.0.1`
+
+# Running tests
+
+ScanOSS API uses the very simple [**snow**](https://github.com/mortie/snow) for unit tests. 
 
 To run all tests: `make test`
 
