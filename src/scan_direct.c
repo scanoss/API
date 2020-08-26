@@ -22,9 +22,11 @@
 
 void scan_direct_scan_request_handler(api_request *req)
 {
+
   char *filename = extract_qs_value(req->form, "file", MAX_PATH);
   char *assets = extract_qs_value(req->form, "assets", MAX_PATH);
   char *scantype = extract_qs_value(req->form, "type", MAX_SCAN_CODE);
+  char *format = extract_qs_value(req->form, "format", MAX_SCAN_CODE);
   if (filename == NULL)
   {
     log_debug("No file supplied returning bad request");
@@ -37,16 +39,38 @@ void scan_direct_scan_request_handler(api_request *req)
   }
 
   // validate scan type
-  if (scantype && !strstr("ignore,identify,blacklist", scantype))
+  if (scantype)
   {
-    log_warn("Invalid scan type: %s", scantype);
-    error_t *error = calloc(1, sizeof(error_t));
-    strcpy(error->code, "INVALID");
-    strcpy(error->message, "Invalid scan type");
-    bad_request_with_error(req, error);
-    Free_all(filename, scantype, error);
-    if (assets)
-      free(assets);
+    if (!strstr("identify,blacklist", scantype))
+    {
+      log_warn("Invalid scan type: %s", scantype);
+      error_t *error = calloc(1, sizeof(error_t));
+      strcpy(error->code, "INVALID");
+      strcpy(error->message, "Invalid scan type");
+      bad_request_with_error(req, error);
+      Free_all(filename, scantype, error);
+      if (assets)
+        free(assets);
+    }
+    // convert scan type
+    else if (!strcmp("identify", scantype))
+    {
+      sprintf(scantype, "-s");
+    }
+    else
+    {
+      sprintf(scantype, "-b");
+    }
+  }
+  else
+  {
+    scantype = calloc(1, 1);
+  }
+  if (format && strstr("plain|spdx|cyclonedx", format))
+  {
+    char tmp[strlen(scantype)];
+    strcpy(tmp, scantype);
+    sprintf(scantype, "-f %s %s", format, tmp);
   }
   free(filename);
   char *tmpfile = extract_qs_value(req->form, "tmpfile", SCAN_FILE_MAX_SIZE);
@@ -61,11 +85,9 @@ void scan_direct_scan_request_handler(api_request *req)
 
   scan_direct_scan(req, tmpfilepath, assets, scantype);
 
-
-
-free(tmpfile);
-if (scantype)
-  free(scantype);
+  free(tmpfile);
+  if (scantype)
+    free(scantype);
 }
 
 /**
