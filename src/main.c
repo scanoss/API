@@ -34,6 +34,9 @@ int main(int argc, char *argv[])
 	log_set_file(SCANOSS_API_LOG);
 	int ws_port = DEFAULT_PORT;
 	strcpy(WAYUU_WS_ROOT, DEFAULT_API_ROOT);
+	sprintf(WAYUU_STATIC_ROOT, "%s/%s", DEFAULT_API_ROOT, DEFAULT_STATIC_ROOT);
+	strcpy(WWW_INDEX, DEFAULT_WWW_INDEX);
+	strcpy(FAVICON_URL, DEFAULT_FAVICON_URL);
 	char bind_addr[24] = "127.0.0.1";
 	signal(SIGPIPE, SIG_IGN);
 
@@ -41,7 +44,7 @@ int main(int argc, char *argv[])
 
 	int opt;
 
-	while ((opt = getopt(argc, argv, ":b:p:r:hd")) != -1)
+	while ((opt = getopt(argc, argv, ":b:p:r:hdt")) != -1)
 	{
 		switch (opt)
 		{
@@ -49,8 +52,11 @@ int main(int argc, char *argv[])
 		case 'd':
 			log_set_level(LOG_DEBUG);
 			break;
+		case 't':
+			log_set_level(LOG_TRACE);
+			break;
 		case 'h':
-			printf("USAGE: scanossws [-d] [-b ip_addr] [-p port] [-r root]\n");
+			printf("USAGE: scanossws [-d] [-t] [-b ip_addr] [-p port] [-r root]\n");
 			exit(0);
 			break;
 		case 'p':

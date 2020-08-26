@@ -22,7 +22,6 @@
 
 #include "../external/crc32c/crc32c.h"
 #include "file_utils.h"
-#include "log.h"
 #include "constants.h"
 
 #include "string_utils.h"

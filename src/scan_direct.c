@@ -77,7 +77,9 @@ void scan_direct_scan(api_request *req, char *path, char *assets, char *scantype
   char command[512];
   if (assets == NULL)
   {
-    sprintf(command, SCANOSS_CMD_SCAN_DIRECT_PLAIN_TMPL, path);
+    log_debug("Direct scan without SBOM.json");
+
+    sprintf(command, SCANOSS_CMD_SCAN_DIRECT_PLAIN_TMPL, path, scantype);
   }
   else
   {
@@ -87,6 +89,7 @@ void scan_direct_scan(api_request *req, char *path, char *assets, char *scantype
     md5sum(md5, assets, strlen(assets));
     sprintf(assets_filename, "/tmp/%s.json", md5);
     write_file(assets_filename, assets, strlen(assets));
+
     sprintf(command, SCANOSS_CMD_SCAN_DIRECT_TMPL, scantype, assets_filename, path);
   }
 

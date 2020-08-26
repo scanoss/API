@@ -23,8 +23,8 @@
 #define SCAN_FILE_MAX_SIZE 1024
 #define SCAN_DIRECT_LINE_SIZE 1024
 
-#define SCANOSS_CMD_SCAN_DIRECT_TMPL "/usr/bin/scanoss --force-wfp --%s %s %s"
-#define SCANOSS_CMD_SCAN_DIRECT_PLAIN_TMPL "/usr/bin/scanoss --force-wfp %s"
+#define SCANOSS_CMD_SCAN_DIRECT_TMPL "/usr/bin/scanoss -w %s %s %s"
+#define SCANOSS_CMD_SCAN_DIRECT_PLAIN_TMPL "/usr/bin/scanoss -w %s %s"
 
 
 
