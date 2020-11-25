@@ -34,7 +34,6 @@ int main(int argc, char *argv[])
 	log_set_file(SCANOSS_API_LOG);
 	int ws_port = DEFAULT_PORT;
 	strcpy(WAYUU_WS_ROOT, DEFAULT_API_ROOT);
-	sprintf(WAYUU_STATIC_ROOT, "%s/%s", DEFAULT_API_ROOT, DEFAULT_STATIC_ROOT);
 	strcpy(WWW_INDEX, DEFAULT_WWW_INDEX);
 	strcpy(FAVICON_URL, DEFAULT_FAVICON_URL);
 	char bind_addr[24] = "127.0.0.1";
@@ -82,6 +81,7 @@ int main(int argc, char *argv[])
 			break;
 		}
 	}
+	sprintf(WAYUU_STATIC_ROOT, "%s/%s", WAYUU_WS_ROOT, DEFAULT_STATIC_ROOT);
 
 	// API Bootstrapping logic.
 	bootstrap_api();
