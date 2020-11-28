@@ -24,6 +24,7 @@
 #define __SCANOSS_BASE_FILE_UTILS_H
 
 #include <stdbool.h>
+#include <stdint.h>
 
 // Maximum files in a folder
 #define MAX_FILES_IN_FOLDER 1024

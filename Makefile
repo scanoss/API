@@ -2,7 +2,7 @@
 CWD=$(shell pwd)
 CC=gcc
 # Enable all compiler warnings. 
-CCFLAGS=-g -Wall 
+CCFLAGS=-g -Wall -std=gnu99
 # Linker flags
 LDFLAGS=-lpthread -lssl -lm -lcrypto -I. 
 # Valgrind flags
