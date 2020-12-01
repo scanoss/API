@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: GPL-2.0-or-later
 /*
- * Copyright (C) 2018-2020 SCANOSS LTD
+ * Copyright (C) 2020 SCANOSS LTD
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,24 +15,31 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
+#ifndef __SCANOSS_COMPONENT_H
+#define __SCANOSS_COMPONENT_H
+
+#include "../wayuu/router.h"
+
 /**
- * bootstrap.c 
- * 
- * Default implementation of bootstrapping functions.
+ * @openapi-method
+ * operationId: ossfile
+ * request: GET /ossfile/{MD5}
+ * description: Return the contents of the file with the given MD5 checksum. 
+ * tags: inventory
+ * params:
+ * - name: MD5
+ *   place: path
+ *   type: string
+ *   required: true
+ *   description: "The MD5 checksum of the file"
+ * responses:
+ * - status: 200 
+ *   description: "Return contents of the file"
+ *   content: text/plain
+ *   schema: string
+ * - status: 404
+ *   description: "File not found"
  */
+void ossfile_request_handler(api_request *req);
 
-#include <stdlib.h>
-#include "scan_direct.h"
-#include "component.h"
-#include "bootstrap.h"
-
-void bootstrap_api_routes()
-{
-  router_add_route("POST:/scan/direct", scan_direct_scan_request_handler, NULL);
-  router_add_route("GET:/ossfile/{md5}", ossfile_request_handler, NULL);
-}
-
-void bootstrap_api()
-{
-  bootstrap_api_routes();
-}
+#endif

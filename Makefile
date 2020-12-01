@@ -57,6 +57,10 @@ clean:
 
 install: $(TARGET)
 	cp $(TARGET) /usr/bin
+
+update-docs:
+	openapi-spec-gen . > scanoss-api.yaml
+  
 	
 
 

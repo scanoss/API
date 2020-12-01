@@ -1,0 +1,14 @@
+openapi: "3.0.0"
+info:
+  version: "1.4"
+  title: SCANOSS API
+  description: This is the documentation for the SCANOSS API.
+  contact:
+    name: SCANOSS
+    url: https://scanoss.com
+
+servers:
+- url: https://osskb.org/api
+  description: OSS KB 
+
+

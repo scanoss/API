@@ -1,0 +1,85 @@
+openapi: 3.0.0
+info:
+  version: '1.4'
+  title: SCANOSS API
+  description: This is the documentation for the SCANOSS API.
+  contact:
+    name: SCANOSS
+    url: https://scanoss.com
+servers:
+- url: https://osskb.org/api
+  description: OSS KB
+paths:
+  /ossfile/{MD5}:
+    get:
+      summary: Return the contents of the file with the given MD5 checksum.
+      operationId: ossfile
+      tags:
+      - inventory
+      responses:
+        '200':
+          description: Return contents of the file
+          content:
+            text/plain:
+              schema:
+                type: string
+        '404':
+          description: File not found
+      parameters:
+      - name: MD5
+        in: path
+        description: The MD5 checksum of the file
+        required: true
+        schema:
+          type: string
+  /scan/direct:
+    post:
+      summary: Direct scan. Performs a scan of an WFP file and returns the result.
+      operationId: scandirect
+      tags:
+      - scan
+      responses:
+        '200':
+          description: Scan successfully created
+        '400':
+          description: Invalid or missing file
+        '500':
+          description: The scanner component encountered an unexpected error
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+                  description: The name of the file to be scanned
+                project_id:
+                  type: integer
+                  description: The project identifier of the scan
+                assets:
+                  type: string
+                  description: The contents of the SBOM file in CycloneDX or SPDX
+                    2.2 format
+                type:
+                  type: string
+                  enum:
+                  - ignore
+                  - identify
+                  - blacklist
+                  description: 'Optional parameter identify the type of scan. Default
+                    value: IGNORE'
+components:
+  schemas:
+    Error:
+      type: object
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+

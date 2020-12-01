@@ -26,8 +26,38 @@
 #define SCANOSS_CMD_SCAN_DIRECT_TMPL "/usr/bin/scanoss -w %s %s %s"
 #define SCANOSS_CMD_SCAN_DIRECT_PLAIN_TMPL "/usr/bin/scanoss -w %s %s"
 
-
-
+/**
+ * @openapi-method
+ * operationId: scandirect
+ * request: POST /scan/direct
+ * description: Direct scan. Performs a scan of an WFP file and returns the result.
+ * tags: scan
+ * params: 
+ * - name: file
+ *   type: file
+ *   place: query
+ *   required: true
+ *   description: "The name of the file to be scanned"
+ * - name: project_id
+ *   type: integer
+ *   required: false
+ *   description: "The project identifier of the scan"
+ * - name: assets
+ *   type: string
+ *   required: false
+ *   description: "The contents of the SBOM file in CycloneDX or SPDX 2.2 format"
+ * - name: type
+ *   type: enum [ignore,identify,blacklist]
+ *   required: false
+ *   description: "Optional parameter identify the type of scan. Default value: IGNORE"
+ * responses: 
+ * - status: 200
+ *   description: "Scan successfully created"
+ * - status: 400
+ *   description: "Invalid or missing file" 
+ * - status: 500
+ *   description: "The scanner component encountered an unexpected error"
+ */
 void scan_direct_scan_request_handler(api_request *req);
 
 /**
