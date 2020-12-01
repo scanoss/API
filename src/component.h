@@ -23,7 +23,7 @@
 /**
  * @openapi-method
  * operationId: ossfile
- * request: GET /ossfile/{MD5}
+ * request: GET /file_contents/{MD5}
  * description: Return the contents of the file with the given MD5 checksum. 
  * tags: inventory
  * params:

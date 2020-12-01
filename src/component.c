@@ -33,7 +33,7 @@ void ossfile_request_handler(api_request *req)
   }
   char *command;
   asprintf(&command, UNMZ_COMMAND, md5);
-  log_debug("Executing %s\n", command);
+  log_debug("Executing %s", command);
   FILE *fp = popen(command, "r");
   if (fp == NULL)
   {
@@ -43,19 +43,20 @@ void ossfile_request_handler(api_request *req)
     return;
   }
 
+  free(command);
   char buf[1024];
 
   // Send HTTP Headers
-  fgets(buf, sizeof(buf) - 1, fp);
-  if (buf == NULL || buf[0] == 'f')
+  if (fgets(buf, sizeof(buf) - 1, fp) == NULL || buf[0] == 'f' || strlen(buf) == 0)
   {
-    log_warn("unmz returned exit status: %s", buf);
-    send_http_status(req, 500, buf);
+    log_warn("unmz returned error exit status or empty: %s", buf);
+    not_found(req);
     pclose(fp);
     return;
   }
+  log_debug("Buf: %s", buf);
 
-  int len = return_json_headers(req, 200);
+  int len = return_headers_with_mime(req, 200, "text/plain");
   send_empty_line(req);
   len += 2;
   // Very important to print what we have already read from the file.
@@ -67,5 +68,4 @@ void ossfile_request_handler(api_request *req)
   req->response_length = len;
   log_access(req, 200);
   log_debug("Finished returning file with MD5 %s", md5);
-  free(command);
 }
