@@ -27,6 +27,7 @@ void scan_direct_scan_request_handler(api_request *req)
   char *assets = extract_qs_value(req->form, "assets", MAX_PATH);
   char *scantype = extract_qs_value(req->form, "type", MAX_SCAN_CODE);
   char *format = extract_qs_value(req->form, "format", MAX_SCAN_CODE);
+  log_debug("Scanning file with format: %s", format);
   if (filename == NULL)
   {
     log_debug("No file supplied returning bad request");
@@ -66,7 +67,7 @@ void scan_direct_scan_request_handler(api_request *req)
   {
     scantype = calloc(1, 1);
   }
-  if (format && strstr("plain|spdx|cyclonedx", format))
+  if (format && strstr("plain|spdx|spdx_xml|cyclonedx", format))
   {
     char tmp[strlen(scantype)];
     strcpy(tmp, scantype);

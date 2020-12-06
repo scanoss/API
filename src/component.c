@@ -54,7 +54,6 @@ void ossfile_request_handler(api_request *req)
     pclose(fp);
     return;
   }
-  log_debug("Buf: %s", buf);
 
   int len = return_headers_with_mime(req, 200, "text/plain");
   send_empty_line(req);
