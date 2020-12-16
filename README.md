@@ -6,7 +6,9 @@ The API is designed to work in conjunction with the SCANOSS Engine to provide an
 
 The API defines the `/api/scan/direct` endpoint that can be used to scan SCANOSS WFP files. One easy way to operate with this API endpoint is via [`scanner.py`](https://github.com/scanoss/scanner.py).
 
-# Building
+# Building from Source
+
+This project includes Wayuu as a git submodule. When cloning make sure that you initialise the submodule running `git submodule init && git submodule update`. This only needs to be done once. Alternatively, clone the project with the`--recurse-submodules` flag (`git clone --recurse-submodules ...`). Keep Wayuu up to date by regularly running `git submodule update`.
 
 SCANOSS doesn't need any external libraries other than standard Linux GNU extensions as well as OpenSSL and libcrypto. You can build SCANOSS API easily with GCC and Make. 
 
