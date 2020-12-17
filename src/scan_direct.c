@@ -15,10 +15,13 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
+#define _GNU_SOURCE
 #include <stdio.h>
 #include <string.h>
 #include "utils/base.h"
+#include "../wayuu/wayuu.h"
 #include "scan_direct.h"
+
 
 void scan_direct_scan_request_handler(api_request *req)
 {
@@ -98,6 +101,7 @@ void scan_direct_scan_request_handler(api_request *req)
 void scan_direct_scan(api_request *req, char *path, char *assets, char *scantype)
 {
   char command[512];
+  uint64_t engine_start = 0;
   if (assets == NULL)
   {
     log_debug("Direct scan without SBOM.json");
@@ -117,6 +121,9 @@ void scan_direct_scan(api_request *req, char *path, char *assets, char *scantype
   }
 
   log_debug("Executing %s\n", command);
+  if (BENCHMARK_ENGINE) {
+    engine_start = epoch_millis();
+  }
   FILE *fp = popen(command, "r");
   if (fp == NULL)
   {
@@ -129,6 +136,7 @@ void scan_direct_scan(api_request *req, char *path, char *assets, char *scantype
 
   // Send HTTP Headers
   fgets(buf, sizeof(buf) - 1, fp);
+  
   if (buf == NULL || buf[0] == 'E')
   {
     log_warn("Scanner returned exit status: %s", buf);
@@ -146,6 +154,18 @@ void scan_direct_scan(api_request *req, char *path, char *assets, char *scantype
   // Send the rest until the end.
   len += send_stream(req, fp);
   pclose(fp);
+  if (BENCHMARK_ENGINE)
+  {
+    uint64_t delay = epoch_millis() - engine_start;
+    FILE *f = fopen(BENCHMARK_ENGINE_FILE, "a+");
+    int filecount = wfp_count_files(path);
+    double delay_per_file = (double)delay / (double)filecount;
+    if (f)
+    {
+      fprintf(f, "%s,%d,%lu,%d\n", command, filecount, delay, (int) delay_per_file);
+      fclose(f);
+    }
+  }
   req->response_length = len;
   log_access(req, 200);
   log_debug("Finished scanning %s", path);

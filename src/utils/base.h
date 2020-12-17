@@ -23,8 +23,9 @@
 #include "../external/crc32c/crc32c.h"
 #include "file_utils.h"
 #include "constants.h"
-
 #include "string_utils.h"
+#include "wfp_utils.h"
+
 
 #define MAX_PATH 4096
 

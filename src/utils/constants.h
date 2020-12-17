@@ -24,7 +24,6 @@
 #include <unistd.h>
 #include <stdbool.h>
 #include <stdint.h>
-#include "../../wayuu/ws.h"
 
 // APP VERSION
 #define SCANOSS_API_VERSION "1.0"
@@ -48,5 +47,8 @@
 // Maximum length of a scan result.
 #define MAX_SCAN_RESULT 1024
 
+#define BENCHMARK_ENGINE_FILE "/tmp/scanoss_engine_benchmark.csv"
+
+extern bool BENCHMARK_ENGINE;
 
 #endif // __SCANOSS_CONSTANTS_H
