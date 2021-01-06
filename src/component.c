@@ -21,7 +21,7 @@
 #include "component.h"
 #include "../wayuu/wayuu.h"
 
-#define UNMZ_COMMAND "unmz -p /var/lib/ldb/mz -k %s"
+#define UNMZ_COMMAND "mz -p /var/lib/ldb/mz/sources -k %s"
 
 void ossfile_request_handler(api_request *req)
 {

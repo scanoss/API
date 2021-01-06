@@ -26,7 +26,7 @@
 #include "component.h"
 #include "bootstrap.h"
 
-void bootstrap_api_routes()
+static void bootstrap_api_routes()
 {
   router_add_route("POST:/scan/direct", scan_direct_scan_request_handler, NULL);
   router_add_route("GET:/file_contents/{md5}", ossfile_request_handler, NULL);
