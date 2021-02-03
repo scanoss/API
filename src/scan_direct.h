@@ -23,8 +23,8 @@
 #define SCAN_FILE_MAX_SIZE 1024
 #define SCAN_DIRECT_LINE_SIZE 1024
 
-#define SCANOSS_CMD_SCAN_DIRECT_TMPL "/usr/bin/scanoss -w %s %s %s"
-#define SCANOSS_CMD_SCAN_DIRECT_PLAIN_TMPL "/usr/bin/scanoss -w %s %s"
+#define SCANOSS_CMD_SCAN_DIRECT_TMPL "/usr/bin/scanoss -w %s %s"
+#define SCANOSS_CMD_SCAN_DIRECT_PLAIN_TMPL "/usr/bin/scanoss -w"
 
 /**
  * @openapi-method
@@ -64,5 +64,5 @@ void scan_direct_scan_request_handler(api_request *req);
  * scan_direct_scan: Scans a wfp file and returns the result.
  * It returns output or NULL if there was a problem with the scanner
  */
-void scan_direct_scan(api_request *req, char *path, char *assets, char *scantype);
+void scan_direct_scan(api_request *req, char *path, char *assets, char *scantype, char *context);
 #endif

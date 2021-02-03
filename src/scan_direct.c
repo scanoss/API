@@ -30,6 +30,7 @@ void scan_direct_scan_request_handler(api_request *req)
   char *assets = extract_qs_value(req->form, "assets", MAX_PATH);
   char *scantype = extract_qs_value(req->form, "type", MAX_SCAN_CODE);
   char *format = extract_qs_value(req->form, "format", MAX_SCAN_CODE);
+  char *context = extract_qs_value(req->form, "context", MAX_PATH);
   log_debug("Scanning file with format: %s", format);
   if (filename == NULL)
   {
@@ -87,7 +88,7 @@ void scan_direct_scan_request_handler(api_request *req)
   char tmpfilepath[MAX_PATH];
   sprintf(tmpfilepath, "%s/%s", FILE_DOWNLOAD_TMP_DIR, tmpfile);
 
-  scan_direct_scan(req, tmpfilepath, assets, scantype);
+  scan_direct_scan(req, tmpfilepath, assets, scantype, context);
 
   free(tmpfile);
   if (scantype)
@@ -98,15 +99,15 @@ void scan_direct_scan_request_handler(api_request *req)
  * scan_direct_scan: Scans a wfp file and returns the result. Optionally, it takes a project identifier. If project_id value is 0, it assumes no project.
  * It returns output or NULL if there was a problem with the scanner
  */
-void scan_direct_scan(api_request *req, char *path, char *assets, char *scantype)
+void scan_direct_scan(api_request *req, char *path, char *assets, char *scantype, char *context)
 {
-  char command[512];
+  char command[MAX_PATH];
   uint64_t engine_start = 0;
   if (assets == NULL)
   {
     log_debug("Direct scan without SBOM.json");
 
-    sprintf(command, SCANOSS_CMD_SCAN_DIRECT_PLAIN_TMPL, path, scantype);
+    strcpy(command, SCANOSS_CMD_SCAN_DIRECT_PLAIN_TMPL);
   }
   else
   {
@@ -117,8 +118,16 @@ void scan_direct_scan(api_request *req, char *path, char *assets, char *scantype
     sprintf(assets_filename, "/tmp/%s.json", md5);
     write_file(assets_filename, assets, strlen(assets));
 
-    sprintf(command, SCANOSS_CMD_SCAN_DIRECT_TMPL, scantype, assets_filename, path);
+    sprintf(command, SCANOSS_CMD_SCAN_DIRECT_TMPL, scantype, assets_filename);
   }
+
+  if (context)
+  {
+    string_fast_strcat(command, " -c ");
+    string_fast_strcat(command, context);
+  }
+  string_fast_strcat(command, " ");
+  string_fast_strcat(command, path);
 
   log_debug("Executing %s\n", command);
   if (BENCHMARK_ENGINE) {
