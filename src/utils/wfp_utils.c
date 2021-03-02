@@ -20,7 +20,7 @@
 #include <stdio.h>
 #include <string.h>
 #include "wfp_utils.h"
-#include "../../wayuu/wayuu.h"
+#include <wayuu/wayuu.h>
 
 // Size of the read buffer, 1Mb
 #define WFP_BUFFER_SIZE 1024 * 1024
@@ -80,7 +80,6 @@ int wfp_count_files(char *filename)
     return -1;
   }
 
-  
   int read_size = 0;
   int nfiles = 0;
   do
@@ -89,9 +88,9 @@ int wfp_count_files(char *filename)
     read_size = fread(buf, sizeof(char), WFP_BUFFER_SIZE - 1, fp);
     nfiles += wfp_count_files_in_string(buf);
     free(buf);
-    
+
   } while (read_size == WFP_BUFFER_SIZE); // Loop while we read a full buffer
-  
+
   fclose(fp);
   log_debug("WFP File: %s has %d files", filename, nfiles);
   return nfiles;

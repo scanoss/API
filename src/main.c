@@ -24,17 +24,18 @@
 #include <string.h>
 #include <time.h>
 
-#include "../wayuu/wayuu.h"
+#include <wayuu/wayuu.h>
 #include "utils/base.h"
 #include "bootstrap.h"
-
+#include "utils/constants.h"
 #define SCANOSS_API_LOG "/var/log/scanoss-api.log"
-
-bool BENCHMARK_ENGINE = false;
 
 int main(int argc, char *argv[])
 {
-	if (getenv("SCANOSS_BENCHMARK_ENGINE")) {
+	BENCHMARK_ENGINE = false;
+
+	if (getenv("SCANOSS_BENCHMARK_ENGINE"))
+	{
 		BENCHMARK_ENGINE = true;
 	}
 	log_set_file(SCANOSS_API_LOG);
@@ -96,6 +97,3 @@ int main(int argc, char *argv[])
 	log_close_file();
 	exit(0);
 }
-
-
-

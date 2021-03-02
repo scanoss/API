@@ -4,7 +4,7 @@ CC=gcc
 # Enable all compiler warnings. 
 CCFLAGS=-g -Wall -std=gnu99
 # Linker flags
-LDFLAGS=-lpthread -lssl -lm -lcrypto -I. 
+LDFLAGS=-lpthread -lssl -lwayuu -lm -lcrypto -I. 
 # Valgrind flags
 VGFLAGS ?= \
 	--quiet --leak-check=full --show-leak-kinds=all \
@@ -20,19 +20,14 @@ TESTABLE_OBJECTS=$(filter-out src/main.o,$(SOURCES:.c=.o))
 TARGET=scanoss-api
 
 
-# The API depends on these libraries.
-LIB_WAYUU=wayuu/libwayuu.a
 
-all: clean libwayuu $(TARGET)
+
+all: clean $(TARGET)
 
 $(TARGET): $(OBJECTS)
-	$(CC) -g -o $@ $^ $(LIB_WAYUU) $(LIB_BASE) $(LDFLAGS)
+	$(CC) -g -o $@ $^ $(LIB_BASE) $(LDFLAGS)
 	rm -f src/*.o src/**/*.o 
 
-
-.PHONY: libwayuu
-libwayuu: 
-	make lib -C wayuu
 
 %.o: %.c
 	$(CC) $(CCFLAGS) -o $@ -c $<
@@ -42,18 +37,18 @@ test/%.o: test/%.c
 	$(CC) -DSNOW_ENABLED -I. -Itest/. $(CCFLAGS) -c -o $@ $<
 
 test-$(TARGET): $(OBJ_TEST) $(TESTABLE_OBJECTS)
-	$(CC) -g -o $@ $(OBJ_TEST) $(TESTABLE_OBJECTS) $(LIB_WAYUU)  $(LIB_BASE) $(LDFLAGS)
+	$(CC) -g -o $@ $(OBJ_TEST) $(TESTABLE_OBJECTS) $(LIB_BASE) $(LDFLAGS)
 	
 
 .PHONY: test
-test: clean libwayuu test-$(TARGET)
+test: $(TARGET)
 	valgrind $(VGFLAGS) ./test-$(TARGET) $(ARGS)
 
 run-valgrind: $(TARGET)
 	valgrind $(VGFLAGS) ./$(TARGET) -d $(ARGS)
 	
 clean:
-	rm -f wayuu/*.o src/*.o src/**/*.o test/*.o test/**/*.o $(TARGET) test-$(TARGET)
+	rm -f  src/*.o src/**/*.o test/*.o test/**/*.o $(TARGET) test-$(TARGET)
 
 install: $(TARGET)
 	cp $(TARGET) /usr/bin

@@ -19,9 +19,9 @@
 #include <stdio.h>
 #include <string.h>
 #include "utils/base.h"
-#include "../wayuu/wayuu.h"
+#include <wayuu/wayuu.h>
 #include "scan_direct.h"
-
+#include "utils/constants.h"
 
 void scan_direct_scan_request_handler(api_request *req)
 {
@@ -130,7 +130,8 @@ void scan_direct_scan(api_request *req, char *path, char *assets, char *scantype
   string_fast_strcat(command, path);
 
   log_debug("Executing %s\n", command);
-  if (BENCHMARK_ENGINE) {
+  if (BENCHMARK_ENGINE)
+  {
     engine_start = epoch_millis();
   }
   FILE *fp = popen(command, "r");
@@ -145,7 +146,7 @@ void scan_direct_scan(api_request *req, char *path, char *assets, char *scantype
 
   // Send HTTP Headers
   fgets(buf, sizeof(buf) - 1, fp);
-  
+
   if (buf == NULL || buf[0] == 'E')
   {
     log_warn("Scanner returned exit status: %s", buf);
@@ -171,7 +172,7 @@ void scan_direct_scan(api_request *req, char *path, char *assets, char *scantype
     double delay_per_file = (double)delay / (double)filecount;
     if (f)
     {
-      fprintf(f, "%s,%d,%lu,%d\n", command, filecount, delay, (int) delay_per_file);
+      fprintf(f, "%s,%d,%lu,%d\n", command, filecount, delay, (int)delay_per_file);
       fclose(f);
     }
   }

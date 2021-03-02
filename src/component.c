@@ -19,7 +19,7 @@
 #include <string.h>
 #include "./utils/string_utils.h"
 #include "component.h"
-#include "../wayuu/wayuu.h"
+#include <wayuu/wayuu.h>
 
 #define UNMZ_COMMAND "mz -p /var/lib/ldb/mz/sources -k %s"
 
