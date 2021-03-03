@@ -49,6 +49,6 @@
 
 #define BENCHMARK_ENGINE_FILE "/tmp/scanoss_engine_benchmark.csv"
 
-extern bool BENCHMARK_ENGINE;
+bool BENCHMARK_ENGINE;
 
 #endif // __SCANOSS_CONSTANTS_H

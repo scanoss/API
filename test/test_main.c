@@ -21,16 +21,14 @@
 #define __SCANOSS_TEST_MAIN_C
 
 #include "snow.h"
-#include "../base/log.h"
 #include "../src/utils/constants.h"
-
+#include <wayuu/wayuu.h>
 snow_main_decls;
 int main(int argc, char **argv)
 {
   log_set_level(LOG_DEBUG);
   // Initialize default paths for test.
   strcpy(WAYUU_WS_ROOT, DEFAULT_API_ROOT);
-  
 
   return snow_main_function(argc, argv);
 }
