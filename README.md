@@ -8,7 +8,7 @@ The API defines the `/api/scan/direct` endpoint that can be used to scan SCANOSS
 
 # Building from Source
 
-This project includes Wayuu as a git submodule. When cloning make sure that you initialise the submodule running `git submodule init && git submodule update`. This only needs to be done once. Alternatively, clone the project with the`--recurse-submodules` flag (`git clone --recurse-submodules ...`). Keep Wayuu up to date by regularly running `git submodule update`.
+This project depens on Wayuu shared library.When cloning make sure that you run `make install-wayuu` to install the lastest release of Wayuu.
 
 SCANOSS doesn't need any external libraries other than standard Linux GNU extensions as well as OpenSSL and libcrypto. You can build SCANOSS API easily with GCC and Make. 
 
@@ -17,7 +17,7 @@ SCANOSS doesn't need any external libraries other than standard Linux GNU extens
 
 # Installation
 
-Run `make install` and the `scanoss-api` binary will be copied to `/usr/bin` by default. 
+Run `make install` and the `scanoss-api` binary will be copied to `/usr/bin` by default.
 
 If you are using Linux you can do a simple systemd script to run the API on startup. Otherwise you can run the binary. 
 
