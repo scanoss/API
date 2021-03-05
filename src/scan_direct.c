@@ -56,6 +56,7 @@ void scan_direct_scan_request_handler(api_request *req)
       Free_all(filename, scantype, error);
       if (assets)
         free(assets);
+      return;
     }
     // convert scan type
     else if (!strcmp("identify", scantype))
