@@ -21,7 +21,7 @@
 #include "component.h"
 #include <wayuu/wayuu.h>
 
-#define UNMZ_COMMAND "mz -p /var/lib/ldb/mz/sources -k %s"
+#define CONTENTS_CMD "scanoss -k %s"
 
 void ossfile_request_handler(api_request *req)
 {
@@ -32,7 +32,7 @@ void ossfile_request_handler(api_request *req)
     return;
   }
   char *command;
-  asprintf(&command, UNMZ_COMMAND, md5);
+  asprintf(&command, CONTENTS_CMD, md5);
   log_debug("Executing %s", command);
   FILE *fp = popen(command, "r");
   if (fp == NULL)
@@ -49,7 +49,7 @@ void ossfile_request_handler(api_request *req)
   // Send HTTP Headers
   if (fgets(buf, sizeof(buf) - 1, fp) == NULL || buf[0] == 'f' || strlen(buf) == 0)
   {
-    log_warn("unmz returned error exit status or empty: %s", buf);
+    log_warn("engine returned error exit status or empty: %s", buf);
     not_found(req);
     pclose(fp);
     return;
