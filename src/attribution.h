@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: GPL-2.0-or-later
 /*
- * Copyright (C) 2018-2020 SCANOSS LTD
+ * Copyright (C) 2020 SCANOSS LTD
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,26 +15,27 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
+#ifndef __SCANOSS_ATRIBUTION_H
+#define __SCANOSS_ATRIBUTION_H
+
+#include "../wayuu/router.h"
+#define SCAN_FILE_MAX_SIZE 1024
+#define SCAN_ATTRIBUTION_LINE_SIZE 1024
+
 /**
- * bootstrap.c 
- * 
- * Default implementation of bootstrapping functions.
+ * @openapi-method
+ * operationId: ossfile
+ * request: POST /file_contents/{MD5}
+ * description: Return the attribution notices for a list of given components in a JSon SBOM format 
+ * responses:
+ * - status: 200 
+ *   description: "Return contents of the file"
+ *   content: text/plain
+ *   schema: string
+ * - status: 404
+ *   description: "File not found"
  */
+void attribution_request_handler(api_request *req);
+void attribution_scan(api_request *req, char *path);
 
-#include <stdlib.h>
-#include "scan_direct.h"
-#include "component.h"
-#include "bootstrap.h"
-#include "attribution.h"
-
-static void bootstrap_api_routes()
-{
-  router_add_route("POST:/scan/direct", scan_direct_scan_request_handler, NULL);
-  router_add_route("GET:/file_contents/{md5}", ossfile_request_handler, NULL);
-  router_add_route("POST:/scan/attribution", attribution_request_handler, NULL);
-}
-
-void bootstrap_api()
-{
-    bootstrap_api_routes();
-}
+#endif
