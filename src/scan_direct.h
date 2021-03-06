@@ -18,7 +18,7 @@
 #ifndef __SCANOSS_SCAN_DIRECT_H
 #define __SCANOSS_SCAN_DIRECT_H
 
-#include "../wayuu/wayuu.h"
+#include <wayuu/wayuu.h>
 
 #define SCAN_FILE_MAX_SIZE 1024
 #define SCAN_DIRECT_LINE_SIZE 1024

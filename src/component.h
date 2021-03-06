@@ -18,7 +18,7 @@
 #ifndef __SCANOSS_COMPONENT_H
 #define __SCANOSS_COMPONENT_H
 
-#include "../wayuu/router.h"
+#include <wayuu/router.h>
 
 /**
  * @openapi-method

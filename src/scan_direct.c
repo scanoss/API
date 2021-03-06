@@ -70,7 +70,8 @@ void scan_direct_scan_request_handler(api_request *req)
   }
   else
   {
-    scantype = calloc(1, 1);
+    scantype = calloc(1, 3);
+    sprintf(scantype, "-s");
   }
   if (format && strstr("plain|spdx|spdx_xml|cyclonedx", format))
   {
