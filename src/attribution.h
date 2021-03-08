@@ -27,10 +27,10 @@
  * operationId: scanattribution
  * request: POST /scan/attribution
  * description: Return the attribution notices for a list of given components in a JSon SBOM format 
- * - filename=<NambeOfSBOM.json> name of file to be scanned
+ * - filename=<NameOfSBOM.json> name of file to be scanned
  * responses:
  * - status: 200 
- *   description: "Attribution notices for a given"
+ *   description: "Attribution notices for a given list of components in SBOM.json file"
  *   content: text/plain
  *   schema: string
  * - status: 404
