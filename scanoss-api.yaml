@@ -70,6 +70,31 @@ paths:
                   - blacklist
                   description: 'Optional parameter identify the type of scan. Default
                     value: IGNORE'
+                    
+  /scan/attribution:
+    post:
+      summary: Scans for attribution notices for a list given in SBOM.json file.
+      operationId: scanattribution
+      tags:
+      - attribution
+      responses:
+        '200':
+          description: Attributions for the given components
+        '400':
+          description: Invalid or missing file
+        '500':
+          description: The scanner component encountered an unexpected error
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+                  description: The name of the file to be scanned
+                            
 components:
   schemas:
     Error:

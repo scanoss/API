@@ -18,22 +18,25 @@
 #ifndef __SCANOSS_ATRIBUTION_H
 #define __SCANOSS_ATRIBUTION_H
 
-#include "../wayuu/router.h"
+#include <wayuu/router.h>
 #define SCAN_FILE_MAX_SIZE 1024
 #define SCAN_ATTRIBUTION_LINE_SIZE 1024
 
 /**
  * @openapi-method
- * operationId: ossfile
- * request: POST /file_contents/{MD5}
+ * operationId: scanattribution
+ * request: POST /scan/attribution
  * description: Return the attribution notices for a list of given components in a JSon SBOM format 
+ * - filename=<NambeOfSBOM.json> name of file to be scanned
  * responses:
  * - status: 200 
- *   description: "Return contents of the file"
+ *   description: "Attribution notices for a given"
  *   content: text/plain
  *   schema: string
  * - status: 404
  *   description: "File not found"
+ * @note For test purposes, the next curl call can be executed
+curl -vvv -X POST -F filename=@../SBOM.json http://127.0.0.1:9999/api/scan/attribution 
  */
 void attribution_request_handler(api_request *req);
 void attribution_scan(api_request *req, char *path);

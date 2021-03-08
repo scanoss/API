@@ -20,7 +20,7 @@
 #include "./utils/string_utils.h"
 #include "utils/base.h"
 #include "attribution.h"
-#include "../wayuu/wayuu.h"
+#include <wayuu/wayuu.h>
 
 #define SCAN_AN_COMMAND "scanoss -a %s"
 /**
@@ -35,11 +35,11 @@ void attribution_request_handler(api_request *req)
 	{
 	    log_debug("No file supplied returning bad request");
 		bad_request(req);
-	if (filename != NULL)
-    {
-      free(filename);
-    }
-    return;
+		if (filename != NULL)
+    	{
+      		free(filename);
+    	}
+    	return;
   	}
 	log_debug("Scanning SBOM file: %s", filename);
   
