@@ -15,31 +15,34 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-#ifndef __SCANOSS_COMPONENT_H
-#define __SCANOSS_COMPONENT_H
+#ifndef __SCANOSS_ATRIBUTION_H
+#define __SCANOSS_ATRIBUTION_H
 
 #include <wayuu/router.h>
+#define SCAN_FILE_MAX_SIZE 1024
+#define SCAN_ATTRIBUTION_LINE_SIZE 1024
 
 /**
  * @openapi-method
- * operationId: ossfile
- * request: GET /file_contents/{MD5}
- * description: Return the contents of the file with the given MD5 checksum. 
- * tags: inventory
+ * operationId: scanattribution
+ * request: POST /sbom/attribution 
+ * description: Return the attribution notices for a list of given components in a JSON SBOM format 
+ * tags: sbom
  * params:
- * - name: MD5
- *   place: path
- *   type: string
+ * - name: file
+ *   type: file
+ *   place: query
  *   required: true
- *   description: "The MD5 checksum of the file"
+ *   description: "The name of the file containing the SBOM.json"
  * responses:
  * - status: 200 
- *   description: "Return contents of the file"
+ *   description: "Attribution notices for a given list of components in SBOM.json file"
  *   content: text/plain
  *   schema: string
  * - status: 404
  *   description: "File not found"
  */
-void ossfile_request_handler(api_request *req);
+void attribution_request_handler(api_request *req);
+void attribution_scan(api_request *req, char *path);
 
 #endif

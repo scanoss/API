@@ -28,33 +28,52 @@
 #include "utils/base.h"
 #include "bootstrap.h"
 #include "utils/constants.h"
-#define SCANOSS_API_LOG "/var/log/scanoss-api.log"
+extern bool WAYUU_SSL_ON;
 
+#define SCANOSS_API_LOG "/var/log/scanoss-api.log"
+char log_file_name[ROOT_PATH_MAX];
+void print_usage(){
+printf("USAGE: scanossws [-f] [-d] [-t] [-b ip_addr] [-p port] [-r root]\n\n"); 
+  printf("-t         : Enabled TRACE mode\n");
+  printf("-d         : Enabled DEBUG mode\n");
+  printf("-b ip_addr : Bind to IP address. Default: \"0.0.0.0\"\n");
+  printf("-p port    : Bind to TCP port. Default: 4443\n");
+  printf("-r root    : Use root as the root folder for WAYUU. Default: /etc/wayuu\n");
+  printf("-f         : HTTP mode\n");
+  printf("-l         : Specify log filename\n");	     	
+  printf("-v         : Print version and exits\n");
+
+
+
+}
 int main(int argc, char *argv[])
 {
 	BENCHMARK_ENGINE = false;
-
+	WAYUU_SSL_ON = true;
 	if (getenv("SCANOSS_BENCHMARK_ENGINE"))
 	{
 		BENCHMARK_ENGINE = true;
 	}
-	log_set_file(SCANOSS_API_LOG);
+	//log_set_file(SCANOSS_API_LOG);
 	int ws_port = DEFAULT_PORT;
 	strcpy(WAYUU_WS_ROOT, DEFAULT_API_ROOT);
 	strcpy(WWW_INDEX, DEFAULT_WWW_INDEX);
 	strcpy(FAVICON_URL, DEFAULT_FAVICON_URL);
 	char bind_addr[24] = "127.0.0.1";
 	signal(SIGPIPE, SIG_IGN);
-
+	strcpy(log_file_name,SCANOSS_API_LOG);
 	// Parse CLI Arguments using getopt
 
 	int opt;
 
-	while ((opt = getopt(argc, argv, ":b:p:r:hdt")) != -1)
+	while ((opt = getopt(argc, argv, ":l:b:p:r:hdtf")) != -1)
 	{
 		switch (opt)
 		{
-
+		
+		case 'f':
+			WAYUU_SSL_ON = false;
+			break;
 		case 'd':
 			log_set_level(LOG_DEBUG);
 			break;
@@ -62,7 +81,7 @@ int main(int argc, char *argv[])
 			log_set_level(LOG_TRACE);
 			break;
 		case 'h':
-			printf("USAGE: scanossws [-d] [-t] [-b ip_addr] [-p port] [-r root]\n");
+			print_usage();
 			exit(0);
 			break;
 		case 'p':
@@ -70,6 +89,9 @@ int main(int argc, char *argv[])
 			break;
 		case 'b':
 			strcpy(bind_addr, optarg);
+			break;
+		case 'l':
+			strcpy(log_file_name, optarg);
 			break;
 		case 'r':
 			strcpy(WAYUU_WS_ROOT, optarg);
@@ -88,6 +110,7 @@ int main(int argc, char *argv[])
 			break;
 		}
 	}
+	log_set_file(log_file_name);
 	sprintf(WAYUU_STATIC_ROOT, "%s/%s", WAYUU_WS_ROOT, DEFAULT_STATIC_ROOT);
 
 	// API Bootstrapping logic.
