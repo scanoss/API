@@ -10,7 +10,34 @@ servers:
 - url: https://osskb.org/api
   description: OSS KB
 paths:
-  /ossfile/{MD5}:
+  /sbom/attribution:
+    post:
+      summary: Return the attribution notices for a list of given components in a
+        JSON SBOM format
+      operationId: scanattribution
+      tags:
+      - sbom
+      responses:
+        '200':
+          description: Attribution notices for a given list of components in SBOM.json
+            file
+          content:
+            text/plain:
+              schema:
+                type: string
+        '404':
+          description: File not found
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+                  description: The name of the file containing the SBOM.json
+  /file_contents/{MD5}:
     get:
       summary: Return the contents of the file with the given MD5 checksum.
       operationId: ossfile
@@ -70,41 +97,6 @@ paths:
                   - blacklist
                   description: 'Optional parameter identify the type of scan. Default
                     value: IGNORE'
-                    
-  /scan/attribution:
-    post:
-      summary: Scans for attribution notices for a list given in SBOM.json file.
-      operationId: scanattribution
-      tags:
-      - attribution
-      responses:
-        '200':
-          description: Attributions for the given components
-        '400':
-          description: Invalid or missing file
-        '500':
-          description: The scanner component encountered an unexpected error
-      requestBody:
-        content:
-          multipart/form-data:
-            schema:
-              type: object
-              properties:
-                file:
-                  type: string
-                  format: binary
-                  description: The name of the file to be scanned
-                            
 components:
-  schemas:
-    Error:
-      type: object
-      required:
-      - code
-      - message
-      properties:
-        code:
-          type: string
-        message:
-          type: string
+  schemas: {}
 

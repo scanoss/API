@@ -25,9 +25,15 @@
 /**
  * @openapi-method
  * operationId: scanattribution
- * request: POST /scan/attribution
- * description: Return the attribution notices for a list of given components in a JSon SBOM format 
- * - filename=<NameOfSBOM.json> name of file to be scanned
+ * request: POST /sbom/attribution 
+ * description: Return the attribution notices for a list of given components in a JSON SBOM format 
+ * tags: sbom
+ * params:
+ * - name: file
+ *   type: file
+ *   place: query
+ *   required: true
+ *   description: "The name of the file containing the SBOM.json"
  * responses:
  * - status: 200 
  *   description: "Attribution notices for a given list of components in SBOM.json file"
@@ -35,8 +41,6 @@
  *   schema: string
  * - status: 404
  *   description: "File not found"
- * @note For test purposes, the next curl call can be executed
-curl -vvv -X POST -F filename=@../SBOM.json http://127.0.0.1:9999/api/scan/attribution 
  */
 void attribution_request_handler(api_request *req);
 void attribution_scan(api_request *req, char *path);
