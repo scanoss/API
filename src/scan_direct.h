@@ -50,6 +50,14 @@
  *   type: enum [ignore,identify,blacklist]
  *   required: false
  *   description: "Optional parameter identify the type of scan. Default value: IGNORE"
+ * - name: context
+ *   type: string
+ *   required: false
+ *   description: "Optional name of the component to take as context"
+ * - name: flags
+ *   type: integer
+ *   required: false
+ *   description: "Optional flags for the scanning engine"
  * responses: 
  * - status: 200
  *   description: "Scan successfully created"
@@ -64,5 +72,5 @@ void scan_direct_scan_request_handler(api_request *req);
  * scan_direct_scan: Scans a wfp file and returns the result.
  * It returns output or NULL if there was a problem with the scanner
  */
-void scan_direct_scan(api_request *req, char *path, char *assets, char *scantype, char *context);
+void scan_direct_scan(api_request *req, char *path, char *assets, char *scantype, char *context, uint32_t flags);
 #endif

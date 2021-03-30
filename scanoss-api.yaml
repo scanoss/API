@@ -1,6 +1,6 @@
 openapi: 3.0.0
 info:
-  version: '1.4'
+  version: '1.5'
   title: SCANOSS API
   description: This is the documentation for the SCANOSS API.
   contact:
@@ -97,6 +97,12 @@ paths:
                   - blacklist
                   description: 'Optional parameter identify the type of scan. Default
                     value: IGNORE'
+                context:
+                  type: string
+                  description: Optional name of the component to take as context
+                flags:
+                  type: integer
+                  description: Optional flags for the scanning engine
 components:
   schemas: {}
 

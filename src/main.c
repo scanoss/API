@@ -42,10 +42,8 @@ printf("USAGE: scanossws [-f] [-d] [-t] [-b ip_addr] [-p port] [-r root]\n\n");
   printf("-f         : HTTP mode\n");
   printf("-l         : Specify log filename\n");	     	
   printf("-v         : Print version and exits\n");
-
-
-
 }
+
 int main(int argc, char *argv[])
 {
 	BENCHMARK_ENGINE = false;
