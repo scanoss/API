@@ -31,8 +31,8 @@ void scan_direct_scan_request_handler(api_request *req)
   char *scantype = extract_qs_value(req->form, "type", MAX_SCAN_CODE);
   char *format = extract_qs_value(req->form, "format", MAX_SCAN_CODE);
   char *context = extract_qs_value(req->form, "context", MAX_PATH);
-  uint32_t flags = extract_uint32_t(req->form, "flags");
-  log_debug("Scanning file with format: %s", format);
+  uint32_t flags = extract_uint32_t("flags",req->form);
+  
   if (filename == NULL)
   {
     log_debug("No file supplied returning bad request");
@@ -130,7 +130,7 @@ void scan_direct_scan(api_request *req, char *path, char *assets, char *scantype
   if(flags > 0) {
     char *sflags;
     asprintf(&sflags, "%u", flags);
-    string_fast_strcat(command, " -F ");
+    string_fast_strcat(command, " -F");
     string_fast_strcat(command, sflags);
     free(sflags);
   }
@@ -142,6 +142,7 @@ void scan_direct_scan(api_request *req, char *path, char *assets, char *scantype
   {
     engine_start = epoch_millis();
   }
+    
   FILE *fp = popen(command, "r");
   if (fp == NULL)
   {
