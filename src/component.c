@@ -22,6 +22,8 @@
 #include <wayuu/wayuu.h>
 
 #define CONTENTS_CMD "scanoss -k %s"
+#define OBLIGATIONS_CMD "scanoss -l %s"
+
 
 void ossfile_request_handler(api_request *req)
 {
@@ -66,5 +68,57 @@ void ossfile_request_handler(api_request *req)
   pclose(fp);
   req->response_length = len;
   log_access(req, 200);
-  log_debug("Finished returning file with MD5 %s", md5);
+  log_debug("Command executed without fails%s");
+}
+
+
+
+void license_obligations_request_handler(api_request *req)
+{
+  char *license_name = extract_qs_value(req->form, "license_name", MAX_LINE_LEN);
+  if (license_name == NULL)
+  {
+    bad_request(req);
+    return;
+  }
+
+  char *command;
+  asprintf(&command, OBLIGATIONS_CMD, license_name);
+  free(license_name);
+
+  log_debug("Executing %s", command);
+  FILE *fp = popen(command, "r");
+  if (fp == NULL)
+  {
+    log_error("Execution failed when obtaining obligation for a license: %s", command);
+    free(command);
+    pclose(fp);
+    not_found(req);
+    return;
+  }
+
+  free(command);
+  char buf[1024];
+
+  // Send HTTP Headers
+  if (fgets(buf, sizeof(buf) - 1, fp) == NULL || buf[0] == 'f' || strlen(buf) == 0)
+  {
+    log_warn("engine returned error exit status or empty: %s", buf);
+    not_found(req);
+    pclose(fp);
+    return;
+  }
+
+  int len = return_headers_with_mime(req, 200, "text/plain");
+  send_empty_line(req);
+  len += 2;
+  // Very important to print what we have already read from the file.
+  http_print_str(req, buf);
+  len += strlen(buf);
+  // Send the rest until the end.
+  len += send_stream(req, fp);
+  pclose(fp);
+  req->response_length = len;
+  log_access(req, 200);
+  log_debug("Command executed without fails%s");
 }

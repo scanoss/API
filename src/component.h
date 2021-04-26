@@ -42,4 +42,26 @@
  */
 void ossfile_request_handler(api_request *req);
 
+/**
+ * @openapi-method
+ * operationId: ossfile
+ * request: GET /file_contents/{MD5}
+ * description: Return the contents of the file with the given MD5 checksum. 
+ * tags: inventory
+ * params:
+ * - name: license_name
+ *   place: path
+ *   type: string
+ *   required: true
+ *   description: "The name of the license"
+ * responses:
+ * - status: 200 
+ *   description: "Return license obligations"
+ *   content: text/plain
+ *   schema: string
+ * - status: 404
+ *   description: "File not found"
+ */
+void license_obligations_request_handler(api_request *req);
+
 #endif
