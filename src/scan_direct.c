@@ -31,8 +31,26 @@ void scan_direct_scan_request_handler(api_request *req)
   char *scantype = extract_qs_value(req->form, "type", MAX_SCAN_CODE);
   char *format = extract_qs_value(req->form, "format", MAX_SCAN_CODE);
   char *context = extract_qs_value(req->form, "context", MAX_PATH);
-  uint32_t flags = extract_uint32_t("flags",req->form);
-  
+  char *aux_engine_version = extract_qs_value(req->form, "User-Agent", MAX_PATH);
+
+  char *extension = get_extension(aux_engine_version);
+  char *engine_version = get_engine_version(aux_engine_version);
+
+  bool valid_v = valid_version(extension, engine_version);
+
+  if (!valid_v)
+  {
+    log_warn("Invalid scan type: %s", scantype);
+    error_t *error = calloc(1, sizeof(error_t));
+    strcpy(error->code, "INVALID");
+    sprintf(error->message, "You have installed an old version of the scanner:%s, please install the lastest version:%s", engine_version, SCANNER_C_VERSION);
+    bad_request_with_error(req, error);
+    Free_all(filename, scantype, error, engine_version, aux_engine_version, error, context);
+    return;
+  }
+
+  uint32_t flags = extract_uint32_t("flags", req->form);
+
   if (filename == NULL)
   {
     log_debug("No file supplied returning bad request");
@@ -127,7 +145,8 @@ void scan_direct_scan(api_request *req, char *path, char *assets, char *scantype
     string_fast_strcat(command, " -c ");
     string_fast_strcat(command, context);
   }
-  if(flags > 0) {
+  if (flags > 0)
+  {
     char *sflags;
     asprintf(&sflags, "%u", flags);
     string_fast_strcat(command, " -F");
@@ -142,7 +161,7 @@ void scan_direct_scan(api_request *req, char *path, char *assets, char *scantype
   {
     engine_start = epoch_millis();
   }
-    
+
   FILE *fp = popen(command, "r");
   if (fp == NULL)
   {
@@ -188,4 +207,74 @@ void scan_direct_scan(api_request *req, char *path, char *assets, char *scantype
   req->response_length = len;
   log_access(req, 200);
   log_debug("Finished scanning %s", path);
+}
+
+bool valid_version(char *extension, char *version)
+{
+
+  if (strcmp(extension, C_EXTENSION) == 0)
+  {
+    if (strcmp(version, SCANNER_C_VERSION) == 0)
+      return true;
+  }
+
+  if (strcmp(extension, JS_EXTENSION) == 0)
+  {
+    if (strcmp(version, SCANNER_JS_VERSION) == 0)
+      return true;
+  }
+
+  if (strcmp(extension, PY_EXTENSION) == 0)
+  {
+    if (strcmp(version, SCANNER_PY_VERSION) == 0)
+      return true;
+  }
+
+  return false;
+}
+
+char *get_engine_version(char *version)
+{
+
+  char *aux_version = malloc(512);
+  char delim[] = "/";
+  char *ptr = strtok(version, delim);
+
+  while (ptr != NULL)
+  {
+    sprintf(aux_version, "%s", ptr);
+    ptr = strtok(NULL, delim);
+  }
+
+  return aux_version;
+}
+
+char *get_extension(char *version)
+{
+
+  int len = strlen(version);
+
+  int i = 0;
+
+  while (i < len && version[i] != '.')
+  {
+    i++;
+  }
+
+  int j = j;
+  while (j < len && version[j] != '/')
+  {
+    j++;
+  }
+
+  int ext_len = (j - i);
+  char *extension = malloc(sizeof(ext_len));
+
+  for (int pos = i; pos < j; pos++)
+  {
+
+    extension[pos - i] = version[pos];
+  }
+
+  return extension;
 }

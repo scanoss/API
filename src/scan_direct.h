@@ -23,6 +23,14 @@
 #define SCAN_FILE_MAX_SIZE 1024
 #define SCAN_DIRECT_LINE_SIZE 1024
 
+#define C_EXTENSION ".c"
+#define JS_EXTENSION ".js"
+#define PY_EXTENSION ".py"
+
+#define SCANNER_C_VERSION "1.3.1"
+#define SCANNER_JS_VERSION "1.3.1"
+#define SCANNER_PY_VERSION "1.3.1"
+
 #define SCANOSS_CMD_SCAN_DIRECT_TMPL "/usr/bin/scanoss -w %s %s"
 #define SCANOSS_CMD_SCAN_DIRECT_PLAIN_TMPL "/usr/bin/scanoss -w"
 
@@ -73,4 +81,11 @@ void scan_direct_scan_request_handler(api_request *req);
  * It returns output or NULL if there was a problem with the scanner
  */
 void scan_direct_scan(api_request *req, char *path, char *assets, char *scantype, char *context, uint32_t flags);
+
+char * get_engine_version(char *version);
+
+char * get_extension(char *version);
+
+bool valid_version(char * extension, char * version);
+
 #endif
