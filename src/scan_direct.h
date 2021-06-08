@@ -82,10 +82,4 @@ void scan_direct_scan_request_handler(api_request *req);
  */
 void scan_direct_scan(api_request *req, char *path, char *assets, char *scantype, char *context, uint32_t flags);
 
-char * get_engine_version(char *version);
-
-char * get_extension(char *version);
-
-bool valid_version(char * extension, char * version);
-
 #endif

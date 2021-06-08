@@ -23,6 +23,52 @@
 #include "scan_direct.h"
 #include "utils/constants.h"
 
+#define CLIENTS_NUMBER 3
+#define CLIENTS_NAME_LEN_MAX 128
+
+char clients[CLIENTS_NAME_LEN_MAX][CLIENTS_NUMBER] = {"SCANNER.C\0", "SCANNER.JS\0", "SCANNER.PY\0"};
+uint clients_versions_min[CLIENTS_NUMBER] = {134, 135, 136};
+
+bool client_version_validate(char * client_field)
+{
+  char * version = strchr(client_field, '/');
+  uint version_number = 0;
+
+  uint version_digits[3] = {0, 0, 0};
+  uint i = 0;
+
+  if (!version)
+    return false;
+
+  while (*version)
+  {
+    if (*version >= '0' && *version <= '9') //if we have a digit
+    {
+      version_digits[i]  = *version;
+      i++;
+    }
+    version++;
+  }
+
+  version_number = version_digits[0] * 100 + version_digits[1] * 10 + version_digits[2];
+
+  //get client name
+  i = 0;
+  while(!strstr(client_field,clients[0][i]) && i < CLIENTS_NUMBER)
+  {
+    i++;
+  }
+  //invalid client
+  if (i == CLIENTS_NUMBER)
+   return false;
+
+  //invalid version
+  if (clients_versions_min[i] > version_number)
+    return false; 
+
+  return true;
+}
+
 void scan_direct_scan_request_handler(api_request *req)
 {
 
@@ -31,21 +77,18 @@ void scan_direct_scan_request_handler(api_request *req)
   char *scantype = extract_qs_value(req->form, "type", MAX_SCAN_CODE);
   char *format = extract_qs_value(req->form, "format", MAX_SCAN_CODE);
   char *context = extract_qs_value(req->form, "context", MAX_PATH);
-  char *aux_engine_version = extract_qs_value(req->form, "User-Agent", MAX_PATH);
+  char *client_version = extract_qs_value(req->form, "User-Agent", MAX_PATH);
 
-  char *extension = get_extension(aux_engine_version);
-  char *engine_version = get_engine_version(aux_engine_version);
-
-  bool valid_v = valid_version(extension, engine_version);
+  bool valid_v = client_version_validate(client_version);
 
   if (!valid_v)
   {
     log_warn("Invalid scan type: %s", scantype);
     error_t *error = calloc(1, sizeof(error_t));
     strcpy(error->code, "INVALID");
-    sprintf(error->message, "You have installed an old version of the scanner:%s, please install the lastest version:%s", engine_version, SCANNER_C_VERSION);
+    sprintf(error->message, "You have installed an old version of the scanner:%s, please install the lastest version:%s", client_version, SCANNER_C_VERSION);
     bad_request_with_error(req, error);
-    Free_all(filename, scantype, error, engine_version, aux_engine_version, error, context);
+    Free_all(filename, scantype, error, client_version, error, context);
     return;
   }
 
@@ -209,72 +252,3 @@ void scan_direct_scan(api_request *req, char *path, char *assets, char *scantype
   log_debug("Finished scanning %s", path);
 }
 
-bool valid_version(char *extension, char *version)
-{
-
-  if (strcmp(extension, C_EXTENSION) == 0)
-  {
-    if (strcmp(version, SCANNER_C_VERSION) == 0)
-      return true;
-  }
-
-  if (strcmp(extension, JS_EXTENSION) == 0)
-  {
-    if (strcmp(version, SCANNER_JS_VERSION) == 0)
-      return true;
-  }
-
-  if (strcmp(extension, PY_EXTENSION) == 0)
-  {
-    if (strcmp(version, SCANNER_PY_VERSION) == 0)
-      return true;
-  }
-
-  return false;
-}
-
-char *get_engine_version(char *version)
-{
-
-  char *aux_version = malloc(512);
-  char delim[] = "/";
-  char *ptr = strtok(version, delim);
-
-  while (ptr != NULL)
-  {
-    sprintf(aux_version, "%s", ptr);
-    ptr = strtok(NULL, delim);
-  }
-
-  return aux_version;
-}
-
-char *get_extension(char *version)
-{
-
-  int len = strlen(version);
-
-  int i = 0;
-
-  while (i < len && version[i] != '.')
-  {
-    i++;
-  }
-
-  int j = j;
-  while (j < len && version[j] != '/')
-  {
-    j++;
-  }
-
-  int ext_len = (j - i);
-  char *extension = malloc(sizeof(ext_len));
-
-  for (int pos = i; pos < j; pos++)
-  {
-
-    extension[pos - i] = version[pos];
-  }
-
-  return extension;
-}
