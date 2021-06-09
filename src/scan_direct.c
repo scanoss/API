@@ -26,12 +26,12 @@
 #define CLIENTS_NUMBER 3
 #define CLIENTS_NAME_LEN_MAX 128
 
-char clients[CLIENTS_NAME_LEN_MAX][CLIENTS_NUMBER] = {"SCANNER.C\0", "SCANNER.JS\0", "SCANNER.PY\0"};
+char clients[CLIENTS_NUMBER][CLIENTS_NAME_LEN_MAX] = {"SCANNER.C\0", "SCANNER.JS\0", "SCANNER.PY\0"};
 uint clients_versions_min[CLIENTS_NUMBER] = {134, 135, 136};
 
-bool client_version_validate(char * client_field)
+bool client_version_validate(char *client_field)
 {
-  char * version = strchr(client_field, '/');
+  char *version = strchr(client_field, '/');
   uint version_number = 0;
 
   uint version_digits[3] = {0, 0, 0};
@@ -44,27 +44,27 @@ bool client_version_validate(char * client_field)
   {
     if (*version >= '0' && *version <= '9') //if we have a digit
     {
-      version_digits[i]  = *version;
+      version_digits[i] = *version - '0'; // ASCII '0' has the ASCII code of 48
       i++;
     }
-    version++;
+    *version++;
   }
 
   version_number = version_digits[0] * 100 + version_digits[1] * 10 + version_digits[2];
 
   //get client name
   i = 0;
-  while(!strstr(client_field,clients[0][i]) && i < CLIENTS_NUMBER)
+  while (!strstr(client_field, clients[i]) && i < CLIENTS_NUMBER)
   {
     i++;
   }
   //invalid client
   if (i == CLIENTS_NUMBER)
-   return false;
+    return false;
 
   //invalid version
   if (clients_versions_min[i] > version_number)
-    return false; 
+    return false;
 
   return true;
 }
@@ -79,14 +79,12 @@ void scan_direct_scan_request_handler(api_request *req)
   char *context = extract_qs_value(req->form, "context", MAX_PATH);
   char *client_version = extract_qs_value(req->form, "User-Agent", MAX_PATH);
 
-  bool valid_v = client_version_validate(client_version);
-
-  if (!valid_v)
+  if (!client_version_validate(client_version))
   {
     log_warn("Invalid scan type: %s", scantype);
     error_t *error = calloc(1, sizeof(error_t));
     strcpy(error->code, "INVALID");
-    sprintf(error->message, "You have installed an old version of the scanner:%s, please install the lastest version:%s", client_version, SCANNER_C_VERSION);
+    sprintf(error->message, "You have installed an old client version");
     bad_request_with_error(req, error);
     Free_all(filename, scantype, error, client_version, error, context);
     return;
@@ -251,4 +249,3 @@ void scan_direct_scan(api_request *req, char *path, char *assets, char *scantype
   log_access(req, 200);
   log_debug("Finished scanning %s", path);
 }
-
