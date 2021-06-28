@@ -23,11 +23,11 @@
 #include "scan_direct.h"
 #include "utils/constants.h"
 
-#define CLIENTS_NUMBER 3
+#define CLIENTS_NUMBER 4
 #define CLIENTS_NAME_LEN_MAX 128
 
-char clients[CLIENTS_NUMBER][CLIENTS_NAME_LEN_MAX] = {"SCANNER.C\0", "SCANNER.JS\0", "SCANNER.PY\0"};
-uint clients_versions_min[CLIENTS_NUMBER] = {134, 135, 136};
+char clients[CLIENTS_NUMBER][CLIENTS_NAME_LEN_MAX] = {"SCANOSS_scanner.c\0, SCANOSS_cli\0", "SCANNER.JS\0", "SCANNER.PY\0"};
+uint clients_versions_min[CLIENTS_NUMBER] = {134, 135, 136, 135};
 
 bool client_version_validate(char *client_field)
 {
@@ -36,6 +36,8 @@ bool client_version_validate(char *client_field)
 
   uint version_digits[3] = {0, 0, 0};
   uint i = 0;
+
+  log_debug("validating %s", client_field);
 
   if (!version)
     return false;
@@ -48,9 +50,12 @@ bool client_version_validate(char *client_field)
       i++;
     }
     *version++;
+    if (i > 3)
+      break;
   }
 
   version_number = version_digits[0] * 100 + version_digits[1] * 10 + version_digits[2];
+  log_debug("version: %d", version_number);
 
   //get client name
   i = 0;
@@ -60,11 +65,19 @@ bool client_version_validate(char *client_field)
   }
   //invalid client
   if (i == CLIENTS_NUMBER)
-    return false;
+  {
+    log_warn("Unrecognized client");
+    return true;
+  }
 
   //invalid version
+      log_debug("comparing vs %d", clients_versions_min[i] );
+
   if (clients_versions_min[i] > version_number)
+  {
+    log_debug("invalid version");
     return false;
+  }
 
   return true;
 }
@@ -75,18 +88,19 @@ void scan_direct_scan_request_handler(api_request *req)
   char *filename = extract_qs_value(req->form, "file", MAX_PATH);
   char *assets = extract_qs_value(req->form, "assets", MAX_PATH);
   char *scantype = extract_qs_value(req->form, "type", MAX_SCAN_CODE);
-  char *format = extract_qs_value(req->form, "format", MAX_SCAN_CODE);
+  //char *format = extract_qs_value(req->form, "format", MAX_SCAN_CODE);
   char *context = extract_qs_value(req->form, "context", MAX_PATH);
-  char *client_version = extract_qs_value(req->form, "User-Agent", MAX_PATH);
+  //char *client_version = extract_qs_value(req->form, "User-Agent", MAX_PATH);
+  char *client_version = http_get_header(req, "User-Agent");
 
   if (!client_version_validate(client_version))
   {
-    log_warn("Invalid scan type: %s", scantype);
+    log_warn("Invalid scanner version: %s", client_version);
     error_t *error = calloc(1, sizeof(error_t));
     strcpy(error->code, "INVALID");
     sprintf(error->message, "You have installed an old client version");
     bad_request_with_error(req, error);
-    Free_all(filename, scantype, error, client_version, error, context);
+    Free_all(filename, scantype, client_version, error, context);
     return;
   }
 
@@ -133,12 +147,13 @@ void scan_direct_scan_request_handler(api_request *req)
     scantype = calloc(1, 3);
     sprintf(scantype, "-s");
   }
+  /*
   if (format && strstr("plain|spdx|spdx_xml|cyclonedx", format))
   {
     char tmp[strlen(scantype)];
     strcpy(tmp, scantype);
     sprintf(scantype, "-f %s %s", format, tmp);
-  }
+  }*/
   free(filename);
   char *tmpfile = extract_qs_value(req->form, "tmpfile", SCAN_FILE_MAX_SIZE);
   if (!tmpfile || tmpfile[0] == 0)
@@ -181,7 +196,7 @@ void scan_direct_scan(api_request *req, char *path, char *assets, char *scantype
     sprintf(command, SCANOSS_CMD_SCAN_DIRECT_TMPL, scantype, assets_filename);
   }
 
-  if (context)
+  if (context && strcmp(context,"none"))
   {
     string_fast_strcat(command, " -c ");
     string_fast_strcat(command, context);
