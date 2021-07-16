@@ -42,6 +42,7 @@
 #define MAX_PROJECT_DESCRIPTION 4096
 #define MAX_USERNAME 256
 #define MAX_SCAN_CODE 256
+#define MAX_POST_VALUE 65536
 
 #define MAX_SCAN_STATUS 128
 // Maximum length of a scan result.

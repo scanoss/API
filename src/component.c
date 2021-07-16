@@ -68,7 +68,7 @@ void ossfile_request_handler(api_request *req)
   pclose(fp);
   req->response_length = len;
   log_access(req, 200);
-  log_debug("Command executed without fails%s");
+  log_debug("Command executed successfully");
 }
 
 
@@ -120,5 +120,5 @@ void license_obligations_request_handler(api_request *req)
   pclose(fp);
   req->response_length = len;
   log_access(req, 200);
-  log_debug("Command executed without fails%s");
+  log_debug("Command executed without successfully");
 }

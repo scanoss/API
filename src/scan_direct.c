@@ -27,7 +27,7 @@ void scan_direct_scan_request_handler(api_request *req)
 {
 
   char *filename = extract_qs_value(req->form, "file", MAX_PATH);
-  char *assets = extract_qs_value(req->form, "assets", MAX_PATH);
+  char *assets = extract_qs_value(req->form, "assets", MAX_POST_VALUE);
   char *scantype = extract_qs_value(req->form, "type", MAX_SCAN_CODE);
   char *format = extract_qs_value(req->form, "format", MAX_SCAN_CODE);
   char *context = extract_qs_value(req->form, "context", MAX_PATH);
