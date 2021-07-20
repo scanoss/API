@@ -114,7 +114,7 @@ int main(int argc, char *argv[])
 	// API Bootstrapping logic.
 	bootstrap_api();
 
-	ws_launch(ws_port, bind_addr);
+	ws_launch(ws_port, bind_addr, NULL);
 	log_close_file();
 	exit(0);
 }

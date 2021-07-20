@@ -50,7 +50,7 @@ void scan_direct_scan_request_handler(api_request *req)
     if (!strstr("identify,blacklist", scantype))
     {
       log_warn("Invalid scan type: %s", scantype);
-      error_t *error = calloc(1, sizeof(error_t));
+      wayuu_error_t *error = calloc(1, sizeof(wayuu_error_t));
       strcpy(error->code, "INVALID");
       strcpy(error->message, "Invalid scan type");
       bad_request_with_error(req, error);
