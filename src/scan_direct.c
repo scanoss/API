@@ -31,6 +31,7 @@ void scan_direct_scan_request_handler(api_request *req)
   char *scantype = extract_qs_value(req->form, "type", MAX_SCAN_CODE);
   char *format = extract_qs_value(req->form, "format", MAX_SCAN_CODE);
   char *context = extract_qs_value(req->form, "context", MAX_PATH);
+  char *db_name = extract_qs_value(req->form, "db_name", MAX_SCAN_CODE);
   uint32_t flags = extract_uint32_t("flags",req->form);
   
   if (filename == NULL)
@@ -91,7 +92,7 @@ void scan_direct_scan_request_handler(api_request *req)
   char tmpfilepath[MAX_PATH];
   sprintf(tmpfilepath, "%s/%s", FILE_DOWNLOAD_TMP_DIR, tmpfile);
 
-  scan_direct_scan(req, tmpfilepath, assets, scantype, context, flags);
+  scan_direct_scan(req, tmpfilepath, assets, scantype, context, db_name, flags);
 
   Free_all(scantype, tmpfile, context);
 }
@@ -100,7 +101,7 @@ void scan_direct_scan_request_handler(api_request *req)
  * scan_direct_scan: Scans a wfp file and returns the result. Optionally, it takes a project identifier. If project_id value is 0, it assumes no project.
  * It returns output or NULL if there was a problem with the scanner
  */
-void scan_direct_scan(api_request *req, char *path, char *assets, char *scantype, char *context, uint32_t flags)
+void scan_direct_scan(api_request *req, char *path, char *assets, char *scantype, char *context, char * db_name, uint32_t flags)
 {
   char command[MAX_PATH];
   uint64_t engine_start = 0;
@@ -127,6 +128,13 @@ void scan_direct_scan(api_request *req, char *path, char *assets, char *scantype
     string_fast_strcat(command, " -c ");
     string_fast_strcat(command, context);
   }
+  if (db_name)
+  {
+    string_fast_strcat(command, " -n");
+    string_fast_strcat(command, db_name);
+    free(db_name);
+  }
+
   if(flags > 0) {
     char *sflags;
     asprintf(&sflags, "%u", flags);
