@@ -73,4 +73,6 @@ void scan_direct_scan_request_handler(api_request *req);
  * It returns output or NULL if there was a problem with the scanner
  */
 void scan_direct_scan(api_request *req, char *path, char *assets, char *scantype, char *context, char * db_name, uint32_t flags);
+
+void scan_ip_list_init(void);
 #endif

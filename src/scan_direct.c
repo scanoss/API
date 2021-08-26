@@ -23,15 +23,60 @@
 #include "scan_direct.h"
 #include "utils/constants.h"
 
+#define IP_LIST_MAX 10
+#define IP_HITS_MAX 10
+char * ip_list[IP_LIST_MAX];
+int  ip_list_hits[IP_LIST_MAX];
+uint32_t ip_list_index = 0;
+
+void scan_ip_list_init(void)
+{
+  memset(ip_list_hits, 0, sizeof(ip_list_hits));
+  ip_list_index = 0;
+}
+
+int ip_find_add(char * ip)
+{
+  for (int i = 0; i < ip_list_index; i++)
+  {
+      if (!strcmp(ip, ip_list[i]))
+      {
+        ip_list_hits[i]++;
+        log_debug("found ip, hits: %d", ip_list_hits[i]);
+
+        if (ip_list_hits[i] > IP_HITS_MAX +2)
+          ip_list_hits[i] = 0;
+
+        return ip_list_hits[i];
+      }
+  }
+
+  ip_list[ip_list_index] = strdup(ip);
+  ip_list_index++;
+  
+  if (ip_list_index >= IP_LIST_MAX)
+    ip_list_index = 0;
+
+  log_debug("%s not found, was added", ip);
+  return -1;
+}
+
 void scan_direct_scan_request_handler(api_request *req)
 {
-
+  if (ip_find_add(req->IP) > IP_HITS_MAX)
+  {
+    log_debug("USER LIMIT EXCEDDED");
+    send_http_status(req,401, "Limit exceeded, you must wait some time (por puto)");
+    return;
+  }
+  
   char *filename = extract_qs_value(req->form, "file", MAX_PATH);
   char *assets = extract_qs_value(req->form, "assets", MAX_POST_VALUE);
   char *scantype = extract_qs_value(req->form, "type", MAX_SCAN_CODE);
   char *format = extract_qs_value(req->form, "format", MAX_SCAN_CODE);
   char *context = extract_qs_value(req->form, "context", MAX_PATH);
   char *db_name = extract_qs_value(req->form, "db_name", MAX_SCAN_CODE);
+
   uint32_t flags = extract_uint32_t("flags",req->form);
   
   if (filename == NULL)
@@ -94,7 +139,7 @@ void scan_direct_scan_request_handler(api_request *req)
 
   scan_direct_scan(req, tmpfilepath, assets, scantype, context, db_name, flags);
 
-  Free_all(scantype, tmpfile, context);
+  Free_all(scantype, tmpfile, context,db_name);
 }
 
 /**

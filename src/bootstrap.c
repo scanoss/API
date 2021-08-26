@@ -33,6 +33,8 @@ static void bootstrap_api_routes()
   router_add_route("GET:/file_contents/{md5}", ossfile_request_handler, NULL);
   router_add_route("POST:/sbom/attribution", attribution_request_handler, NULL);
   router_add_route("GET:/license/obligations/{license_name}", license_obligations_request_handler, NULL);
+
+  scan_ip_list_init();
 }
 
 void bootstrap_api()
