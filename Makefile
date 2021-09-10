@@ -1,6 +1,8 @@
 
 CWD=$(shell pwd)
+ifeq ($(origin CC),default)
 CC=gcc
+endif
 # Enable all compiler warnings. 
 CCFLAGS=-g -Wall -std=gnu99
 # Linker flags
