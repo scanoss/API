@@ -4,7 +4,12 @@ The API is designed to work in conjunction with the SCANOSS Engine to provide an
 
 # API Usage 
 
-The API defines the `/api/scan/direct` endpoint that can be used to scan SCANOSS WFP files. One easy way to operate with this API endpoint is via [`scanner.py`](https://github.com/scanoss/scanner.py).
+The API defines the `/api/scan/direct` endpoint that can be used to scan SCANOSS WFP files. One easy way to operate with this API endpoint is via one of the availables clients:
+- https://github.com/scanoss/scanoss.py
+- https://github.com/scanoss/scanoss-cli
+
+# OpenApi docs
+You can test this API using the openapi documentation available in: https://docs.osskb.org/
 
 # Building from Source
 
