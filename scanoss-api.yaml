@@ -100,6 +100,9 @@ paths:
                 context:
                   type: string
                   description: Optional name of the component to take as context
+                db_name:
+                  type: string
+                  description: Optional name of the KB to do the scan
                 flags:
                   type: integer
                   description: Optional flags for the scanning engine

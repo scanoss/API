@@ -1,0 +1,6 @@
+[Unit]
+Description=SCANOSS API Service
+
+[Service]
+ExecStart=/usr/bin/scanoss-api.sh
+Restart=always
