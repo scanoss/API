@@ -42,7 +42,7 @@ paths:
       summary: Return the contents of the file with the given MD5 checksum.
       operationId: ossfile
       tags:
-      - inventory
+      - file contents
       responses:
         '200':
           description: Return contents of the file
