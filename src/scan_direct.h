@@ -54,6 +54,10 @@
  *   type: string
  *   required: false
  *   description: "Optional name of the component to take as context"
+ * - name: db_name
+ *   type: string
+ *   required: false
+ *   description: "Name of the KB used in the scan"
  * - name: flags
  *   type: integer
  *   required: false

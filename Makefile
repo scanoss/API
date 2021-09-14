@@ -43,7 +43,7 @@ test-$(TARGET): $(OBJ_TEST) $(TESTABLE_OBJECTS)
 	
 
 .PHONY: test
-test: $(TARGET)
+test: test-$(TARGET)
 	valgrind $(VGFLAGS) ./test-$(TARGET) $(ARGS)
 
 run-valgrind: $(TARGET)
