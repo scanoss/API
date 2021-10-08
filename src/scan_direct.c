@@ -66,7 +66,7 @@ void scan_direct_scan_request_handler(api_request *req)
   if (ip_find_add(req->IP) > IP_HITS_MAX)
   {
     log_debug("USER LIMIT EXCEDDED");
-    send_http_status(req,401, "Limit exceeded, you must wait some time (por puto)");
+    send_http_status(req,401, "Limit exceeded, you must wait some time");
     return;
   }
   
