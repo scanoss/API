@@ -32,8 +32,15 @@ extern bool WAYUU_SSL_ON;
 
 #define SCANOSS_API_LOG "/var/log/scanoss-api.log"
 char log_file_name[ROOT_PATH_MAX];
+
+
+ /**
+ * @brief print options to stdout
+ */
+
+
 void print_usage(){
-printf("USAGE: scanossws [-f] [-d] [-t] [-b ip_addr] [-p port] [-r root]\n\n"); 
+  printf("USAGE: scanossws [-f] [-d] [-t] [-b ip_addr] [-p port] [-r root]\n\n"); 
   printf("-t         : Enabled TRACE mode\n");
   printf("-d         : Enabled DEBUG mode\n");
   printf("-b ip_addr : Bind to IP address. Default: \"0.0.0.0\"\n");
@@ -43,6 +50,12 @@ printf("USAGE: scanossws [-f] [-d] [-t] [-b ip_addr] [-p port] [-r root]\n\n");
   printf("-l         : Specify log filename\n");	     	
   printf("-v         : Print version and exits\n");
 }
+
+
+ /**
+ * @brief input options from command line
+ * @param argc arguments
+ */
 
 int main(int argc, char *argv[])
 {

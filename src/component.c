@@ -24,6 +24,11 @@
 #define CONTENTS_CMD "scanoss -k %s"
 #define OBLIGATIONS_CMD "scanoss -l %s"
 
+/**
+ * @brief handle used by the router to get the contents of the file with the given MD5 checksum
+ * @param req Struct that contains the request parameters 
+ * @return return a struct that contains the response parameters
+ */
 
 void ossfile_request_handler(api_request *req)
 {
@@ -71,7 +76,11 @@ void ossfile_request_handler(api_request *req)
   log_debug("Command executed successfully");
 }
 
-
+/**
+ * @brief handle used by the router to get the contents of the file with the given MD5 checksum
+ * @param req Struct that contains the request parameters 
+ * @return return a struct that contains the response parameters
+ */
 
 void license_obligations_request_handler(api_request *req)
 {

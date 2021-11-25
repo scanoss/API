@@ -23,10 +23,13 @@
 #include <wayuu/wayuu.h>
 
 #define SCAN_AN_COMMAND "scanoss -a %s"
+
+
 /**
-@brief handle used by the router to scann attribution notices
-@param req Struct that contains the request parameters 
-*/
+ * @brief handle used by the router to scan attribution notices
+ * @param req Struct that contains the request parameters 
+ * @return return a struct that contains the response parameters
+ */
 void attribution_request_handler(api_request *req)
 {
 
@@ -59,7 +62,7 @@ void attribution_request_handler(api_request *req)
 	free(tmpfile);
 }
 
-
+// TO DO remove this documentation
 /**
  * @brief get attribution notices for components given SBOM 
  * @description runs the command scanoss -a <SBOM.json> to collect the
@@ -67,6 +70,16 @@ void attribution_request_handler(api_request *req)
  *  component are returned to the client as response.
  *  An internal server error is the response for no results.
  */
+
+/**
+ * @brief get attribution notices for components given SBOM  
+ * @param req Struct that contains the request parameters 
+ * @param path path to the SBOM file
+ * @return return a struct that contains the attribution notices of each component
+ * An internal server error is the response for no results.
+ */
+
+
 void attribution_scan(api_request *req, char *path)
 {
 	char command[MAX_PATH];
