@@ -27,6 +27,13 @@
 /*
  * list_files_in_dir: List all files in a directory
  */
+
+  /**
+ * @brief List all files in a directory
+ * @param dirname path to the directory
+ * @return return a list of all files contained in a directory
+ */
+
 files_list list_files_in_dir(char *dirname)
 {
 
@@ -58,6 +65,12 @@ files_list list_files_in_dir(char *dirname)
   return list;
 }
 
+/**
+ * @brief used to free the memory allocated 
+ * @param list list of files
+ */
+
+
 void free_files_list(files_list list)
 {
   for (int i = 0; i < list.n_files; i++)
@@ -65,6 +78,11 @@ void free_files_list(files_list list)
     free(list.files[i]);
   }
 }
+
+/**
+ * @brief check if a file exists
+ * @param fname name of the file
+ */
 
 bool file_exists(char *fname)
 {
@@ -83,6 +101,13 @@ uint64_t file_size(char *path)
   }
   return length;
 }
+
+
+/**
+ * @brief get the file extension of a file
+ * @param path path to the file
+ * @return return the file extension
+ */
 
 char *file_extension(char *path)
 {
@@ -103,6 +128,14 @@ char *file_extension(char *path)
   return NULL;
 }
 
+
+/**
+ * @brief get the file extension of a file
+ * @param path path to the file
+ * @param ext extension of the file
+ * @return return true if the extension is the same as the one provided
+ */
+
 bool file_has_ext(char *path, char *ext)
 {
   char extension[20];
@@ -115,15 +148,34 @@ bool file_has_ext(char *path, char *ext)
   return strcasecmp(extension, ext) == 0;
 }
 
+
+/**
+ * @brief know if it is a wfp file
+ * @param path path to the file
+ * @return return true if it is a wfp file
+ */
+
 bool is_wfp_file(char *path)
 {
   return file_has_ext(path, "wfp");
 }
 
+/**
+ * @brief know if it is a zip file
+ * @param path path to the file
+ * @return return true if it is a zip file
+ */
+
 bool is_zip_file(char *path)
 {
   return file_has_ext(path, "zip");
 }
+
+/**
+ * @brief get md5 of a file
+ * @param filepath path to the file
+ * @return return the md5 of a file
+ */
 
 uint8_t *file_md5(char *filepath)
 {

@@ -27,6 +27,12 @@
 #include "bootstrap.h"
 #include "attribution.h"
 
+/**
+ * @brief handle used by the router to get the contents of the file with the given MD5 checksum
+ * @param req Struct that contains the request parameters 
+ * @return return a struct that contains the response parameters
+ */
+
 
 
 static void bootstrap_api_routes()

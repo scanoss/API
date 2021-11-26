@@ -30,7 +30,8 @@ char *string_fast_strcat(char *dest, char *src)
   while ((*dest++ = *src++))
     ;
   return --dest;
-}
+} 
+
 
 bool valid_alpha(char *data)
 {
