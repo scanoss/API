@@ -34,7 +34,7 @@ char *string_fast_strcat(char *dest, char *src)
   return --dest;
 } 
 
-// TO DO 
+
 
 bool valid_alpha(char *data)
 {

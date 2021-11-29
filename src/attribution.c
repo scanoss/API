@@ -62,14 +62,6 @@ void attribution_request_handler(api_request *req)
 	free(tmpfile);
 }
 
-// TO DO remove this documentation
-/**
- * @brief get attribution notices for components given SBOM 
- * @description runs the command scanoss -a <SBOM.json> to collect the
- *  attibution notices of each component. The attibution notices of each
- *  component are returned to the client as response.
- *  An internal server error is the response for no results.
- */
 
 /**
  * @brief get attribution notices for components given SBOM  
