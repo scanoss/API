@@ -53,8 +53,9 @@ void print_usage(){
 
 
  /**
- * @brief input options from command line
- * @param argc arguments
+ * @brief setting API from command line
+ * @param argc number of arguments
+ * @param argv vector of arguments
  */
 
 int main(int argc, char *argv[])

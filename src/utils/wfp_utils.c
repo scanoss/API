@@ -26,6 +26,12 @@
 #define WFP_BUFFER_SIZE 1024 * 1024
 #define WFP_FILE_KEY "file="
 
+/**
+ * @brief Counts the number of files in string. 
+ * @param buffer The string to count the number of files in.
+ * @return return the number of files in the string. Returns 0 if the buffer is empty or equal to 0.
+ */
+
 int wfp_count_files_in_string(char *buffer)
 {
   if (!buffer || strlen(buffer) == 0)
@@ -61,10 +67,13 @@ int wfp_count_files_in_string(char *buffer)
   free(tmp);
   return nfiles;
 }
+
 /**
- * wfp_count_files: Counts the number of files in a WFP file. It reads the file as a stream into a buffer and returns the number of file entries.
- * If an error occurs, it returns -1 and logs an error. 
+ * @brief Counts the number of files in a WFP file. It reads the file as a stream into a buffer and returns the number of file entries.
+ * @param filename The file name to be analized.
+ * @return return the number of files in the string. Returns 0 if the buffer is empty or equal to 0. Return -1 and log the error if an error occurs.
  */
+
 int wfp_count_files(char *filename)
 {
   if (!is_file(filename))

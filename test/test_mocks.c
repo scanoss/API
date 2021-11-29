@@ -30,8 +30,10 @@ char *buf;
 int remaining_bytes;
 int buf_size;
 
+
+
 /**
- *  init_mock_socket_buffer. Initialises mock socket buffer. Should be balled with every test.
+ * @brief Initialises mock socket buffer. Should be balled with every test.
  */
 void init_mock_socket_buffer()
 {

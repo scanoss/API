@@ -28,12 +28,8 @@
 #include "attribution.h"
 
 /**
- * @brief handle used by the router to get the contents of the file with the given MD5 checksum
- * @param req Struct that contains the request parameters 
- * @return return a struct that contains the response parameters
+ * @brief API router. Each verb and URI is mapped to a function.
  */
-
-
 
 static void bootstrap_api_routes()
 {
@@ -42,6 +38,10 @@ static void bootstrap_api_routes()
   router_add_route("POST:/sbom/attribution", attribution_request_handler, NULL);
   router_add_route("GET:/license/obligations/{license_name}", license_obligations_request_handler, NULL);
 }
+
+/**
+ * @brief It is called when from main.c after the API is configured.
+ */
 
 void bootstrap_api()
 {

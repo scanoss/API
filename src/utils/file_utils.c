@@ -24,9 +24,7 @@
 #include <openssl/md5.h>
 
 #include "file_utils.h"
-/*
- * list_files_in_dir: List all files in a directory
- */
+
 
   /**
  * @brief List all files in a directory
@@ -102,7 +100,6 @@ uint64_t file_size(char *path)
   return length;
 }
 
-
 /**
  * @brief get the file extension of a file
  * @param path path to the file
@@ -127,7 +124,6 @@ char *file_extension(char *path)
     return slash + 1;
   return NULL;
 }
-
 
 /**
  * @brief get the file extension of a file
