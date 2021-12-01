@@ -15,6 +15,13 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
+
+  /**
+  * @file component.c
+  * @date 16 July 2021 
+  * @brief Contains functions to handle oss file and license obbligations requests. 
+  */
+
 #define _GNU_SOURCE
 #include <string.h>
 #include "./utils/string_utils.h"

@@ -16,6 +16,12 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+  /**
+  * @file wfp_utils.c
+  * @date 3 March 2021 
+  * @brief Contains functions to get the number of files in a wfp.
+  */
+
 #include <stdbool.h>
 #include <stdio.h>
 #include <string.h>

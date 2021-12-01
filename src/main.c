@@ -16,6 +16,12 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+ /**
+  * @file main.c
+  * @date 20 July 2021 
+  * @brief Contains a method to show the API menu to the user and a function to handle the user's input. 
+  */
+
 #include <execinfo.h>
 #include <signal.h>
 #include <stdbool.h>

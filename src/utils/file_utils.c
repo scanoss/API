@@ -15,6 +15,14 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
+
+
+/**
+  * @file file_utils.c
+  * @date 12 July 2020 
+  * @brief Contains functions to work with files and directories.
+  */
+
 #include <dirent.h>
 #include <stdbool.h>
 #include <stdio.h>

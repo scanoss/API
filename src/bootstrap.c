@@ -21,6 +21,12 @@
  * Default implementation of bootstrapping functions.
  */
 
+/**
+  * @file bootstrap.c
+  * @date 8 March 2021 
+  * @brief API router. Each request is routed to the appropriate function.
+  */
+
 #include <stdlib.h>
 #include "scan_direct.h"
 #include "component.h"
@@ -28,7 +34,7 @@
 #include "attribution.h"
 
 /**
- * @brief API router. Each verb and URI is mapped to a function.
+ * @brief  Each verb and URI is mapped to a handler function.
  */
 
 static void bootstrap_api_routes()

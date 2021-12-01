@@ -15,6 +15,13 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
+
+ /**
+  * @file scan_direct.c
+  * @date 17 August 2021 
+  * @brief Contains functions to handle scan request and scan a file.
+  */
+
 #define _GNU_SOURCE
 #include <stdio.h>
 #include <string.h>
@@ -26,7 +33,7 @@
 /**
  * @brief Handle the request to do a scan.
  * @param req Struct that contains the request parameters 
- * @return return a struct that contains the response parameters
+ * @return Contains function to scan wfp files 
  */
 
 void scan_direct_scan_request_handler(api_request *req)

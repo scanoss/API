@@ -15,6 +15,13 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
+
+  /**
+  * @file string_utils.c
+  * @date 12 July 2020 
+  * @brief Contains functions to extract data from JSON.
+  */
+
 #include <stdio.h>
 #include "string_utils.h"
 
