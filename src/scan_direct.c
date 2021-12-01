@@ -19,7 +19,7 @@
  /**
   * @file scan_direct.c
   * @date 17 August 2021 
-  * @brief Contains functions to handle scan request and scan a file.
+  * @brief Contains functions to handle scan request and scan a wfp of file.
   */
 
 #define _GNU_SOURCE

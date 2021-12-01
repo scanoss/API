@@ -19,7 +19,7 @@
   /**
   * @file wfp_utils.c
   * @date 3 March 2021 
-  * @brief Contains functions to get the number of files in a wfp.
+  * @brief Contains functions to process a wfp file and get number of files contained in it.
   */
 
 #include <stdbool.h>

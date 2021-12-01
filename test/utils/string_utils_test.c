@@ -15,6 +15,14 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
+
+  /**
+  * @file string_utils_test.c
+  * @date 12 July 2020 
+  * @brief Contains functions to test the string_utils.c functions. The results of each test are shown in the console.
+  */
+
+
 #include "snow.h"
 #include "../../src/utils/string_utils.h"
 

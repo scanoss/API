@@ -19,7 +19,7 @@
   /**
   * @file string_utils.c
   * @date 12 July 2020 
-  * @brief Contains functions to extract data from JSON.
+  * @brief Contains functions to work with strings and extract data from a JSON.
   */
 
 #include <stdio.h>

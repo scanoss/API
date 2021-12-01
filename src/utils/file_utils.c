@@ -20,7 +20,7 @@
 /**
   * @file file_utils.c
   * @date 12 July 2020 
-  * @brief Contains functions to work with files and directories.
+  * @brief Contains functions to get the file extension,size,md5 of a file and get recursively the files of a folder.
   */
 
 #include <dirent.h>
