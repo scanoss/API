@@ -21,11 +21,21 @@
  * Default implementation of bootstrapping functions.
  */
 
+/**
+  * @file bootstrap.c
+  * @date 8 March 2021 
+  * @brief API router. Each request is routed to the appropriate function.
+  */
+
 #include <stdlib.h>
 #include "scan_direct.h"
 #include "component.h"
 #include "bootstrap.h"
 #include "attribution.h"
+
+/**
+ * @brief  Each verb and URI is mapped to a handler function.
+ */
 
 static void bootstrap_api_routes()
 {
@@ -34,6 +44,10 @@ static void bootstrap_api_routes()
   router_add_route("POST:/sbom/attribution", attribution_request_handler, NULL);
   router_add_route("GET:/license/obligations/{license_name}", license_obligations_request_handler, NULL);
 }
+
+/**
+ * @brief It is called when from main.c after the API is configured.
+ */
 
 void bootstrap_api()
 {

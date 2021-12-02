@@ -15,14 +15,23 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
+
+  /**
+  * @file string_utils.c
+  * @date 12 July 2020 
+  * @brief Contains functions to work with strings and extract data from a JSON.
+  */
+
 #include <stdio.h>
 #include "string_utils.h"
 
 /**
- * string_fast_strcat: Very fast string concatenation. Pass a copy of the original destination string as the 'dest' argument. 
- * This is because the algorithm returns the original pointer displaced. The destination pointer needs to be big enough to accommodate the concatenation.
- * This is done for speed. Check test in test/string_utils_test.c
+ * @brief concatate two strings. 
+ * @param src string to concat
+ * @param dest string that will be concat to src. It needs to be big enough to accommodate the concatenation.
+ * @return return the concatenation of the strings
  */
+
 char *string_fast_strcat(char *dest, char *src)
 {
   while (*dest)
@@ -30,7 +39,9 @@ char *string_fast_strcat(char *dest, char *src)
   while ((*dest++ = *src++))
     ;
   return --dest;
-}
+} 
+
+
 
 bool valid_alpha(char *data)
 {
@@ -44,6 +55,12 @@ bool valid_alpha(char *data)
 
   return true;
 }
+
+/**
+ * @brief know if a string has a digit
+ * @param data string to be analized
+ * @return return true if a contains a digit and false otherwise
+ */
 
 bool string_isdigit(char *data)
 {
@@ -59,13 +76,14 @@ bool string_isdigit(char *data)
 }
 
 /**
- * extract_qs_value: Extracts a value from an input query string, corresponding to the key specified.
+ * @brief extracts a value from an input query string, corresponding to the key specified.
  * The output string is guaranteed to have a maximun size of max_len.
- *
- * If the query string does not contain the key specified, the function returns NULL.
- *
- * This is a safer form of extract_tag, designed to replace it.
+ * @param in request form
+ * @param key key to be extracted
+ * @param max_len length of the output string
+ * @return return the value of the key. NULL if the key is not found.
  */
+
 char *extract_qs_value(char *in, char *key, long max_len)
 {
   if (!in || in[0] == 0 || strlen(in) == 0)
@@ -113,9 +131,13 @@ char *extract_qs_value(char *in, char *key, long max_len)
   return target;
 }
 
-/**
- * extract_ulong: Extracts an unsigned long from the input string in the key given.
+  /**
+ * @brief Extracts an unsigned long from the input string in the key given.
+ * @param key key to be extracted
+ * @param in request form
+ * @return return the value of the key. 0 if the key is not found or the value is not a number.
  */
+
 uint64_t extract_ulong(char *key, char *in)
 {
   char *ulong_str = extract_qs_value(in, key, MAX_INT_STR);
@@ -129,9 +151,14 @@ uint64_t extract_ulong(char *key, char *in)
   return result;
 }
 
-/**
- * extract_uint32_t: Extracts an unsigned int from the input string in the key given.
+
+  /**
+ * @brief Extracts an unsigned int from the input string in the key given.
+ * @param key key to be extracted
+ * @param in request form
+ * @return return the value of the key. 0 if the key is not found or the value is not a number.
  */
+
 uint32_t extract_uint32_t(char *key, char *in)
 {
   char *ulong_str = extract_qs_value(in, key, MAX_INT_STR);
@@ -143,6 +170,15 @@ uint32_t extract_uint32_t(char *key, char *in)
   free(ulong_str);
   return result;
 }
+
+
+
+  /**
+ * @brief Print data in hexadecimal format
+ * @param data Data to be printed in hexadecimal format
+ * @param len Length of the data
+ 
+ */
 
 void hexprint(uint8_t *data, uint32_t len)
 {

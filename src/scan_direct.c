@@ -15,6 +15,13 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
+
+ /**
+  * @file scan_direct.c
+  * @date 17 August 2021 
+  * @brief Contains functions to handle scan request and scan a wfp of file.
+  */
+
 #define _GNU_SOURCE
 #include <stdio.h>
 #include <string.h>
@@ -22,6 +29,12 @@
 #include <wayuu/wayuu.h>
 #include "scan_direct.h"
 #include "utils/constants.h"
+
+/**
+ * @brief Handle the request to do a scan.
+ * @param req Struct that contains the request parameters 
+ * @return Contains function to scan wfp files 
+ */
 
 void scan_direct_scan_request_handler(api_request *req)
 {
@@ -97,10 +110,19 @@ void scan_direct_scan_request_handler(api_request *req)
   Free_all(scantype, tmpfile, context);
 }
 
+
 /**
- * scan_direct_scan: Scans a wfp file and returns the result. Optionally, it takes a project identifier. If project_id value is 0, it assumes no project.
- * It returns output or NULL if there was a problem with the scanner
+ * @brief  Scans a wfp file and returns the result
+ * @param req Struct that contains the request parameters 
+ * @param path Path to the temporary file
+ * @param assets String with the assets to scan
+ * @param scantype String with the scan type
+ * @param context String with the context
+ * @param db_name String with the name of the KB db used in the scan
+ * @param flags flags for the scanning engine
+ * @return return the results of the wfp file
  */
+
 void scan_direct_scan(api_request *req, char *path, char *assets, char *scantype, char *context, char * db_name, uint32_t flags)
 {
   char command[MAX_PATH];

@@ -16,6 +16,12 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+ /**
+  * @file main.c
+  * @date 20 July 2021 
+  * @brief Contains a method to show the API menu to the user and a function to handle the user's input. 
+  */
+
 #include <execinfo.h>
 #include <signal.h>
 #include <stdbool.h>
@@ -32,8 +38,15 @@ extern bool WAYUU_SSL_ON;
 
 #define SCANOSS_API_LOG "/var/log/scanoss-api.log"
 char log_file_name[ROOT_PATH_MAX];
+
+
+ /**
+ * @brief print options to stdout
+ */
+
+
 void print_usage(){
-printf("USAGE: scanossws [-f] [-d] [-t] [-b ip_addr] [-p port] [-r root]\n\n"); 
+  printf("USAGE: scanossws [-f] [-d] [-t] [-b ip_addr] [-p port] [-r root]\n\n"); 
   printf("-t         : Enabled TRACE mode\n");
   printf("-d         : Enabled DEBUG mode\n");
   printf("-b ip_addr : Bind to IP address. Default: \"0.0.0.0\"\n");
@@ -43,6 +56,13 @@ printf("USAGE: scanossws [-f] [-d] [-t] [-b ip_addr] [-p port] [-r root]\n\n");
   printf("-l         : Specify log filename\n");	     	
   printf("-v         : Print version and exits\n");
 }
+
+
+ /**
+ * @brief setting API from command line
+ * @param argc number of arguments
+ * @param argv vector of arguments
+ */
 
 int main(int argc, char *argv[])
 {

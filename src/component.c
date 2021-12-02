@@ -15,6 +15,13 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
+
+  /**
+  * @file component.c
+  * @date 16 July 2021 
+  * @brief Contains functions to handle oss file and license obbligations requests. 
+  */
+
 #define _GNU_SOURCE
 #include <string.h>
 #include "./utils/string_utils.h"
@@ -24,6 +31,11 @@
 #define CONTENTS_CMD "scanoss -k %s"
 #define OBLIGATIONS_CMD "scanoss -l %s"
 
+/**
+ * @brief handle used by the router to get the contents of the file with the given MD5 checksum
+ * @param req Struct that contains the request parameters 
+ * @return return a struct that contains the response parameters
+ */
 
 void ossfile_request_handler(api_request *req)
 {
@@ -71,7 +83,11 @@ void ossfile_request_handler(api_request *req)
   log_debug("Command executed successfully");
 }
 
-
+/**
+ * @brief handle used by the router to get the contents of the file with the given MD5 checksum
+ * @param req Struct that contains the request parameters 
+ * @return return a struct that contains the response parameters
+ */
 
 void license_obligations_request_handler(api_request *req)
 {

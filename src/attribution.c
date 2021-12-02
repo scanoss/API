@@ -15,6 +15,13 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
+
+/**
+  * @file attribution.c
+  * @date 8 March 2021 
+  * @brief Contains all the attribution handlers that are called from the router.
+  */
+
 #define _GNU_SOURCE
 #include <string.h>
 #include "./utils/string_utils.h"
@@ -23,50 +30,52 @@
 #include <wayuu/wayuu.h>
 
 #define SCAN_AN_COMMAND "scanoss -a %s"
+
 /**
-@brief handle used by the router to scann attribution notices
-@param req Struct that contains the request parameters 
-*/
+ * @brief handle used by the router to scan attribution notices
+ * @param req Struct that contains the request parameters 
+ * @return return a struct that contains the response parameters
+ */
 void attribution_request_handler(api_request *req)
 {
 
 	char *filename = extract_qs_value(req->form, "file", MAX_PATH);
 	if (filename == NULL)
 	{
-	    log_debug("No file supplied returning bad request");
+		log_debug("No file supplied returning bad request");
 		bad_request(req);
 		if (filename != NULL)
-    	{
-      		free(filename);
-    	}
-    	return;
-  	}
+		{
+			free(filename);
+		}
+		return;
+	}
 	log_debug("Scanning SBOM file: %s", filename);
-  
+
 	// Extract the filename from the POST
 	char *tmpfile = extract_qs_value(req->form, "tmpfile", SCAN_FILE_MAX_SIZE);
 	if (!tmpfile || tmpfile[0] == 0)
 	{
-    	log_debug("Unable to find tmpfile, returning bad request");
-    	bad_request(req);
-    	return;
-  	}
-  
-  	//get the absolute path of the temp file
-  	char tmpfilepath[MAX_PATH];
+		log_debug("Unable to find tmpfile, returning bad request");
+		bad_request(req);
+		return;
+	}
+
+	//get the absolute path of the temp file
+	char tmpfilepath[MAX_PATH];
 	sprintf(tmpfilepath, "%s/%s", FILE_DOWNLOAD_TMP_DIR, tmpfile);
 	attribution_scan(req, tmpfilepath);
 	free(tmpfile);
 }
 
-
 /**
- * @brief get attribution notices for components given SBOM 
- * @description runs the command scanoss -a <SBOM.json> to collect the
- *  attibution notices of each component. The attibution notices of each
- *  component are returned to the client as response.
- *  An internal server error is the response for no results.
+ * @brief get attribution notices for components given SBOM  
+ * @param req Struct that contains the request parameters 
+ * @param path path to the SBOM file
+ * @return return a struct that contains the attribution notices of each component
+ * An internal server error is the response for no results.
  */
+
 void attribution_scan(api_request *req, char *path)
 {
 	char command[MAX_PATH];
@@ -83,14 +92,14 @@ void attribution_scan(api_request *req, char *path)
 	//	Capture the results
 	char buf[SCAN_ATTRIBUTION_LINE_SIZE];
 
-  // Send HTTP Headers
+	// Send HTTP Headers
 	fgets(buf, sizeof(buf) - 1, fp);
-  
+
 	if (buf == NULL || buf[0] == 'E')
 	{
 		log_warn("Scanner returned exit status: %s", buf);
 		send_http_status(req, 500, buf);
-    	pclose(fp);
+		pclose(fp);
 		return;
 	}
 	//	Send header
