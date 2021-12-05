@@ -7,4 +7,4 @@
 scanoss-api
 test-scanoss-api
 *.o
-
+doc/html

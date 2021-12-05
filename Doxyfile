@@ -4,9 +4,9 @@
 # Project related configuration options
 #---------------------------------------------------------------------------
 DOXYFILE_ENCODING      = UTF-8
-PROJECT_NAME           = "Engine"
-PROJECT_NUMBER         = 4.3.7
-PROJECT_BRIEF          = "Open Source Inventory"
+PROJECT_NAME           = "API"
+PROJECT_NUMBER         = 1.2.1
+PROJECT_BRIEF          = "Designed to work in conjunction with the SCANOSS Engine to provide an API for Open Source scanning. It is built on top of WAYUU Web Server"
 PROJECT_LOGO           = doc/scanoss-logo.png
 OUTPUT_DIRECTORY       = doc
 CREATE_SUBDIRS         = NO
