@@ -13,6 +13,8 @@ You can test this API using the openapi documentation available in: https://docs
 
 # Building from Source
 
+Make sure to have net-tools installed.
+
 This project depens on Wayuu shared library.When cloning make sure that you run `make install-wayuu` to install the lastest release of Wayuu.
 
 SCANOSS doesn't need any external libraries other than standard Linux GNU extensions as well as OpenSSL and libcrypto. You can build SCANOSS API easily with GCC and Make. 

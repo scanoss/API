@@ -54,12 +54,13 @@ clean:
 
 install: $(TARGET)
 	cp $(TARGET) /usr/bin
-	
+	cp scripts/scanoss-api.sh /usr/bin
+	cp scripts/scanoss-api.service /etc/systemd/system/
 install-wayuu:
 	#installing Wayuu shared library
-	wget https://github.com/scanoss/wayuu/releases/download/v1.4.2/wayuu-1.4.2-amd64.deb
-	mv wayuu-1.4.2-amd64.deb /tmp
-	sudo dpkg -i /tmp/wayuu-1.4.2-amd64.deb
+	wget https://github.com/scanoss/wayuu/releases/download/v1.4.8/wayuu-1.4.8-amd64.deb
+	mv wayuu-1.4.8-amd64.deb /tmp
+	sudo dpkg -i /tmp/wayuu-1.4.8-amd64.deb
 	
 update-docs:
 	openapi-spec-gen . > scanoss-api.yaml
