@@ -26,7 +26,7 @@
 #include <stdint.h>
 
 // APP VERSION
-#define SCANOSS_API_VERSION "1.0"
+#define SCANOSS_API_VERSION "1.1"
 #define DEFAULT_API_ROOT "/var/lib/scanoss"
 
 #define MD5_SIZE 34

@@ -84,7 +84,7 @@ int main(int argc, char *argv[])
 
 	int opt;
 
-	while ((opt = getopt(argc, argv, ":l:b:p:r:hdtf")) != -1)
+	while ((opt = getopt(argc, argv, ":l:b:p:r:hdtfv")) != -1)
 	{
 		switch (opt)
 		{
@@ -118,6 +118,10 @@ int main(int argc, char *argv[])
 			{
 				log_fatal("Unable to start, root directory doesn't exist: %s", WAYUU_WS_ROOT);
 			}
+			break;
+		case 'v':
+			printf("SCANOSS API - Version: %s\n", SCANOSS_API_VERSION);
+			exit(0);
 			break;
 		case ':':
 			printf("option needs a value\n");
