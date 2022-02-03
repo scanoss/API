@@ -25,6 +25,8 @@
     #define __API_CONFIG_T
 
 #include <wayuu/wayuu.h>
+#define DEFAULT_API_CONFIG_PATH "/var/lib/scanoss/api-config.json"
+
 
 typedef struct api_config_t
 {
@@ -40,5 +42,5 @@ extern api_config_t api_config;
 
 
 void api_config_default(void);
-bool api_config_read_file(void);
+bool api_config_read_file(char * path);
 #endif

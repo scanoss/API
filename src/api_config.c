@@ -20,7 +20,6 @@
 
 #define DEFAULT_BIND_ADDRESS "127.0.0.1"
 #define DEFAULT_API_LOG "/var/log/scanoss-api.log"
-#define DEFAULT_API_CONFIG_PATH "/var/lib/scanoss/api-config.json"
 
 api_config_t api_config;
 
@@ -31,17 +30,17 @@ api_config_t api_config;
  * @param path file path.
  * @param maxlen max length to read.
  */
-static char * read_config_file()
+static char * read_config_file(char * path)
 {
 	char *src = NULL;
 	uint64_t length = 0;
 
-	if (!is_file(api_config.config_file_path))
+	if (!is_file(path))
 	{
 		return NULL;
 	}
 
-	FILE *file = fopen(api_config.config_file_path, "rb");
+	FILE *file = fopen(path, "rb");
 	if (file)
 	{
 		fseek(file, 0, SEEK_END);
@@ -62,6 +61,7 @@ static char * read_config_file()
 
 void api_config_default(void)
 {
+	memset(&api_config, 0, sizeof(api_config));
     strcpy(api_config.config_file_path, DEFAULT_API_CONFIG_PATH);
 	strcpy(api_config.bind_addr, DEFAULT_BIND_ADDRESS);
     strcpy(api_config.log_file_name, DEFAULT_API_LOG);
@@ -80,14 +80,22 @@ void api_config_default(void)
 #define CONFIG_FILE_KEY_BIND_ADDRESS "\"bind_address\": \""
 #define CONFIG_FILE_KEY_PORT "\"port\": "
 
-bool api_config_read_file()
+bool api_config_read_file(char *  path)
 {
-	char * json = read_config_file();
+	api_config_t m_api_config;
+	
+	/*copy the default config */
+	memcpy(&m_api_config, &api_config, sizeof(api_config));
+	
+	char * json = read_config_file(path);
 	char field[1024];
 	char * end = NULL;
 	
 	if (!json)
         return false;
+	
+	memset(api_config.config_file_path, 0, sizeof(api_config.config_file_path));
+	strcpy(api_config.config_file_path, path);
 
 	char * key_engine_flags = strstr(json, CONFIG_FILE_KEY_ENGINE_FLAGS);
 	if (key_engine_flags)
@@ -151,6 +159,9 @@ bool api_config_read_file()
 		api_config.wayuu_service_port = atoi(key_port);
 		printf("Port result: %d\n", api_config.wayuu_service_port);
 	}
+
+	/* If all is OK replace the default with the updated config */
+	memcpy(&api_config, &m_api_config, sizeof(api_config));
 
 	return true;
 

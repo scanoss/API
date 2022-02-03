@@ -57,6 +57,7 @@ void print_usage(){
   printf("-r root    : Use root as the root folder for WAYUU. Default: /etc/wayuu\n");
   printf("-f         : HTTP mode\n");
   printf("-l         : Specify log filename\n");	     	
+  printf("-l         : Specify a JSON config file\n");
   printf("-v         : Print version and exits\n");
 }
 
@@ -70,7 +71,6 @@ void print_usage(){
 int main(int argc, char *argv[])
 {
 	api_config_default();
-	api_config_read_file();
 	WAYUU_SSL_ON = true;
 	if (getenv("SCANOSS_BENCHMARK_ENGINE"))
 	{
@@ -87,7 +87,7 @@ int main(int argc, char *argv[])
 
 	int opt;
 
-	while ((opt = getopt(argc, argv, ":l:b:p:r:hdtfv")) != -1)
+	while ((opt = getopt(argc, argv, ":l:b:p:r:c:hdtfv")) != -1)
 	{
 		switch (opt)
 		{
@@ -121,6 +121,10 @@ int main(int argc, char *argv[])
 			{
 				log_fatal("Unable to start, root directory doesn't exist: %s", WAYUU_WS_ROOT);
 			}
+			break;
+		case 'c':
+			if (!api_config_read_file(optarg))
+				log_error("There is a problem with the config file, loading default");
 			break;
 		case 'v':
 			printf("SCANOSS API - Version: %s\n", SCANOSS_API_VERSION);
