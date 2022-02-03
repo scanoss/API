@@ -40,4 +40,5 @@ extern api_config_t api_config;
 
 
 void api_config_default(void);
+bool api_config_read_file(void);
 #endif

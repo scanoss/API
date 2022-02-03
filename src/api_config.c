@@ -20,7 +20,7 @@
 
 #define DEFAULT_BIND_ADDRESS "127.0.0.1"
 #define DEFAULT_API_LOG "/var/log/scanoss-api.log"
-#define DEFAULT_API_CONFIG_PATH "/var/scanoss/api-config.json"
+#define DEFAULT_API_CONFIG_PATH "/var/lib/scanoss/api-config.json"
 
 api_config_t api_config;
 
@@ -62,7 +62,8 @@ static char * read_config_file()
 
 void api_config_default(void)
 {
-    strcpy(api_config.bind_addr, DEFAULT_BIND_ADDRESS);
+    strcpy(api_config.config_file_path, DEFAULT_API_CONFIG_PATH);
+	strcpy(api_config.bind_addr, DEFAULT_BIND_ADDRESS);
     strcpy(api_config.log_file_name, DEFAULT_API_LOG);
     api_config.wayuu_service_port = DEFAULT_PORT;
     api_config.engine_flags = 0;
@@ -73,14 +74,84 @@ void api_config_default(void)
  * @brief Read flags from /etc/scanoss_flags.cfg
  * @return //TODO
  */
-#define CONFIG_FILE_KEY_ENGINE "\"engine: \""
+#define CONFIG_FILE_KEY_ENGINE_FLAGS "\"engine_flags\": "
+#define CONFIG_FILE_KEY_LOG_PATH "\"log_file_path\": \""
+#define CONFIG_FILE_KEY_ENGINE_BENCHMARK "\"engine_benchmark\": \""
+#define CONFIG_FILE_KEY_BIND_ADDRESS "\"bind_address\": \""
+#define CONFIG_FILE_KEY_PORT "\"port\": "
+
 bool api_config_read_file()
 {
 	char * json = read_config_file();
-
-    if (!json)
+	char field[1024];
+	char * end = NULL;
+	
+	if (!json)
         return false;
 
-    
+	char * key_engine_flags = strstr(json, CONFIG_FILE_KEY_ENGINE_FLAGS);
+	if (key_engine_flags)
+	{
+		key_engine_flags += strlen(CONFIG_FILE_KEY_ENGINE_FLAGS);
+		api_config.engine_flags = atoi(key_engine_flags);
+		printf("Engine flags result: %d \n", api_config.engine_flags);
+	}
+
+	char * key_engine_benchmark = strstr(json, CONFIG_FILE_KEY_ENGINE_BENCHMARK);
+	if (key_engine_benchmark)
+	{
+		key_engine_benchmark += strlen(CONFIG_FILE_KEY_ENGINE_BENCHMARK);
+		end = strchr(key_engine_benchmark, '"');
+		if (end)
+			strncpy(field, key_engine_benchmark, end - key_engine_benchmark);
+		else
+			return false;
+		
+		if (strstr(key_engine_benchmark, "true"))
+			api_config.engine_benchmark = true;
+		printf("benchmark result: %d\n", api_config.engine_benchmark);
+	}
+
+	char * key_bind_adress = strstr(json, CONFIG_FILE_KEY_BIND_ADDRESS);
+	if (key_bind_adress)
+	{
+		key_bind_adress += strlen(CONFIG_FILE_KEY_BIND_ADDRESS);
+		end = strchr(key_bind_adress, '"');
+		if (end)
+		{
+			memset(api_config.bind_addr, 0, sizeof(api_config.bind_addr));
+			strncpy(api_config.bind_addr, key_bind_adress, end - key_bind_adress);
+		}
+		else
+			return false;
+
+		printf("Bind address result: %s\n", api_config.bind_addr);
+	}
+
+	char * key_log_path = strstr(json, CONFIG_FILE_KEY_LOG_PATH);
+	if (key_log_path)
+	{
+		key_log_path += strlen(CONFIG_FILE_KEY_LOG_PATH);
+		end = strchr(key_log_path, '"');
+		if (end)
+		{
+			memset(api_config.log_file_name, 0, sizeof(api_config.log_file_name));
+			strncpy(api_config.log_file_name, key_log_path, end - key_log_path);
+		}
+		else
+			return false;
+
+		printf("log path result: %s\n", api_config.log_file_name);
+	}
+
+	char * key_port = strstr(json, CONFIG_FILE_KEY_PORT);
+	if (key_port)
+	{
+		key_port += strlen(CONFIG_FILE_KEY_PORT);
+		api_config.wayuu_service_port = atoi(key_port);
+		printf("Port result: %d\n", api_config.wayuu_service_port);
+	}
+
+	return true;
 
 }

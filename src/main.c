@@ -70,7 +70,7 @@ void print_usage(){
 int main(int argc, char *argv[])
 {
 	api_config_default();
-
+	api_config_read_file();
 	WAYUU_SSL_ON = true;
 	if (getenv("SCANOSS_BENCHMARK_ENGINE"))
 	{
