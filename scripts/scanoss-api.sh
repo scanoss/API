@@ -7,7 +7,6 @@
 # Install it in /usr/bin
 #
 ################################################################
-smtp-tls "SCANOSS API" "SCANOSS API Starting"
 BIND_IP="0.0.0.0"
 TSTAMP=$(date '+%Y%m%d-%H%M%S')
 
@@ -15,4 +14,4 @@ TSTAMP=$(date '+%Y%m%d-%H%M%S')
 cp /var/log/scanoss-api.log /var/log/scanoss-api.log.$TSTAMP
 echo > /var/log/scanoss-api.log
 #start API
-/usr/bin/scanossws -d -b ${BIND_IP}
+/usr/bin/scanoss-api -f -d -b ${BIND_IP}
