@@ -34,6 +34,8 @@
 #include "utils/base.h"
 #include "bootstrap.h"
 #include "utils/constants.h"
+#include "scan_direct.h"
+
 extern bool WAYUU_SSL_ON;
 
 #define SCANOSS_API_LOG "/var/log/scanoss-api.log"

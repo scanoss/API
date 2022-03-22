@@ -30,6 +30,9 @@
 #include "scan_direct.h"
 #include "utils/constants.h"
 
+bool BENCHMARK_ENGINE;
+
+
 /**
  * @brief Handle the request to do a scan.
  * @param req Struct that contains the request parameters 
