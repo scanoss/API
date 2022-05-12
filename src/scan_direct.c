@@ -217,5 +217,6 @@ void scan_direct_scan(api_request *req, char *path, char *assets, char *scantype
   }
   req->response_length = len;
   log_access(req, 200);
-  log_debug("Finished scanning %s", path);
+  log_debug("Finished scanning %s. Removing temp file", path);
+  remove(path);
 }

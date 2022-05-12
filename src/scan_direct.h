@@ -26,6 +26,8 @@
 #define SCANOSS_CMD_SCAN_DIRECT_TMPL "/usr/bin/scanoss -w %s %s"
 #define SCANOSS_CMD_SCAN_DIRECT_PLAIN_TMPL "/usr/bin/scanoss -w"
 
+extern bool BENCHMARK_ENGINE;
+
 /**
  * @openapi-method
  * operationId: scandirect

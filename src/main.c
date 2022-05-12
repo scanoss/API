@@ -37,6 +37,7 @@
 
 #include "api_config.h"
 
+
 extern bool WAYUU_SSL_ON;
 
 #define SCANOSS_API_LOG "/var/log/scanoss-api.log"
