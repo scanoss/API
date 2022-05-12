@@ -29,10 +29,7 @@
 #include <wayuu/wayuu.h>
 #include "scan_direct.h"
 #include "utils/constants.h"
-
-bool BENCHMARK_ENGINE;
-
-
+#include "api_config.h"
 /**
  * @brief Handle the request to do a scan.
  * @param req Struct that contains the request parameters 
@@ -48,7 +45,7 @@ void scan_direct_scan_request_handler(api_request *req)
   char *format = extract_qs_value(req->form, "format", MAX_SCAN_CODE);
   char *context = extract_qs_value(req->form, "context", MAX_PATH);
   char *db_name = extract_qs_value(req->form, "db_name", MAX_SCAN_CODE);
-  uint32_t flags = extract_uint32_t("flags",req->form);
+  uint32_t flags = extract_uint32_t("flags", req->form);
   
   if (filename == NULL)
   {
@@ -162,7 +159,7 @@ void scan_direct_scan(api_request *req, char *path, char *assets, char *scantype
 
   if(flags > 0) {
     char *sflags;
-    asprintf(&sflags, "%u", flags);
+    asprintf(&sflags, "%u", api_config.engine_flags | flags);
     string_fast_strcat(command, " -F");
     string_fast_strcat(command, sflags);
     free(sflags);
@@ -171,7 +168,7 @@ void scan_direct_scan(api_request *req, char *path, char *assets, char *scantype
   string_fast_strcat(command, path);
 
   log_debug("Executing %s\n", command);
-  if (BENCHMARK_ENGINE)
+  if (api_config.engine_benchmark)
   {
     engine_start = epoch_millis();
   }
@@ -206,7 +203,7 @@ void scan_direct_scan(api_request *req, char *path, char *assets, char *scantype
   // Send the rest until the end.
   len += send_stream(req, fp);
   pclose(fp);
-  if (BENCHMARK_ENGINE)
+  if (api_config.engine_benchmark)
   {
     uint64_t delay = epoch_millis() - engine_start;
     FILE *f = fopen(BENCHMARK_ENGINE_FILE, "a+");

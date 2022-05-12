@@ -34,7 +34,9 @@
 #include "utils/base.h"
 #include "bootstrap.h"
 #include "utils/constants.h"
-#include "scan_direct.h"
+
+#include "api_config.h"
+
 
 extern bool WAYUU_SSL_ON;
 
@@ -51,12 +53,13 @@ void print_usage(){
   printf("USAGE: scanossws [-f] [-d] [-t] [-b ip_addr] [-p port] [-r root]\n\n"); 
   printf("-t         : Enabled TRACE mode\n");
   printf("-d         : Enabled DEBUG mode\n");
+  printf("-c file    : Use a JSON config file\n");
   printf("-b ip_addr : Bind to IP address. Default: \"0.0.0.0\"\n");
   printf("-p port    : Bind to TCP port. Default: 4443\n");
   printf("-r root    : Use root as the root folder for WAYUU. Default: /etc/wayuu\n");
   printf("-f         : HTTP mode\n");
   printf("-l         : Specify log filename\n");	     	
-  printf("-v         : Print version and exits\n");
+  printf("-v         : Print version and exit\n");
 }
 
 
@@ -68,25 +71,24 @@ void print_usage(){
 
 int main(int argc, char *argv[])
 {
-	BENCHMARK_ENGINE = false;
+	api_config_default();
 	WAYUU_SSL_ON = true;
 	if (getenv("SCANOSS_BENCHMARK_ENGINE"))
 	{
-		BENCHMARK_ENGINE = true;
+		api_config.engine_benchmark = true;
 	}
-	//log_set_file(SCANOSS_API_LOG);
-	int ws_port = DEFAULT_PORT;
+
 	strcpy(WAYUU_WS_ROOT, DEFAULT_API_ROOT);
 	strcpy(WWW_INDEX, DEFAULT_WWW_INDEX);
 	strcpy(FAVICON_URL, DEFAULT_FAVICON_URL);
-	char bind_addr[24] = "127.0.0.1";
+
 	signal(SIGPIPE, SIG_IGN);
-	strcpy(log_file_name,SCANOSS_API_LOG);
+
 	// Parse CLI Arguments using getopt
 
 	int opt;
 
-	while ((opt = getopt(argc, argv, ":l:b:p:r:hdtfv")) != -1)
+	while ((opt = getopt(argc, argv, ":l:b:p:r:c:hdtfv")) != -1)
 	{
 		switch (opt)
 		{
@@ -105,13 +107,13 @@ int main(int argc, char *argv[])
 			exit(0);
 			break;
 		case 'p':
-			ws_port = atoi(optarg);
+			api_config.wayuu_service_port = atoi(optarg);
 			break;
 		case 'b':
-			strcpy(bind_addr, optarg);
+			strcpy(api_config.bind_addr, optarg);
 			break;
 		case 'l':
-			strcpy(log_file_name, optarg);
+			strcpy(api_config.log_file_name, optarg);
 			break;
 		case 'r':
 			strcpy(WAYUU_WS_ROOT, optarg);
@@ -120,6 +122,10 @@ int main(int argc, char *argv[])
 			{
 				log_fatal("Unable to start, root directory doesn't exist: %s", WAYUU_WS_ROOT);
 			}
+			break;
+		case 'c':
+			if (!api_config_read_file(optarg))
+				log_error("There is a problem with the config file, loading default");
 			break;
 		case 'v':
 			printf("SCANOSS API - Version: %s\n", SCANOSS_API_VERSION);
@@ -134,13 +140,14 @@ int main(int argc, char *argv[])
 			break;
 		}
 	}
-	log_set_file(log_file_name);
+	
+	log_set_file(api_config.log_file_name);
 	sprintf(WAYUU_STATIC_ROOT, "%s/%s", WAYUU_WS_ROOT, DEFAULT_STATIC_ROOT);
 
 	// API Bootstrapping logic.
 	bootstrap_api();
 
-	ws_launch(ws_port, bind_addr, NULL);
+	ws_launch(api_config.wayuu_service_port, api_config.bind_addr, NULL);
 	log_close_file();
 	exit(0);
 }

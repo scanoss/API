@@ -15,7 +15,7 @@ You can test this API using the openapi documentation available in: https://docs
 
 Make sure to have net-tools installed.
 
-This project depens on Wayuu shared library.When cloning make sure that you run `make install-wayuu` to install the lastest release of Wayuu.
+This project depens on Wayuu shared library. When cloning make sure that you run `make install-wayuu` to install the lastest release of Wayuu.
 
 SCANOSS doesn't need any external libraries other than standard Linux GNU extensions as well as OpenSSL and libcrypto. You can build SCANOSS API easily with GCC and Make. 
 
@@ -28,10 +28,16 @@ Run `make install` and the `scanoss-api` binary will be copied to `/usr/bin` by 
 
 If you are using Linux you can do a simple systemd script to run the API on startup. Otherwise you can run the binary. 
 
-## Default Values
-- Default port is 4443
-- Default API Root folder is `/var/lib/scanoss`
-- Default bind IP Address is `127.0.0.1`
+## Command options
+
+* -d: Logs in debug level.
+* -t: Logs in trace level.
+* -f: HTTP mode (SSL disable).
+* -b[IP]: define bind IP address (default is `127.0.0.1`).
+* -p[PORT]: define TCP port number (default is `4443`).
+* -r[DIR]: Use root as the root folder for WAYUU (default is `/etc/wayuu`).
+* -c[FILE]: use a config json file. Check at test/api-config.json to see an example.
+* -l[FILE]: Specify log file path.
 
 # Running tests
 
