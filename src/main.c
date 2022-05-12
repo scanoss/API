@@ -53,13 +53,13 @@ void print_usage(){
   printf("USAGE: scanossws [-f] [-d] [-t] [-b ip_addr] [-p port] [-r root]\n\n"); 
   printf("-t         : Enabled TRACE mode\n");
   printf("-d         : Enabled DEBUG mode\n");
+  printf("-c file    : Use a JSON config file\n");
   printf("-b ip_addr : Bind to IP address. Default: \"0.0.0.0\"\n");
   printf("-p port    : Bind to TCP port. Default: 4443\n");
   printf("-r root    : Use root as the root folder for WAYUU. Default: /etc/wayuu\n");
   printf("-f         : HTTP mode\n");
   printf("-l         : Specify log filename\n");	     	
-  printf("-l         : Specify a JSON config file\n");
-  printf("-v         : Print version and exits\n");
+  printf("-v         : Print version and exit\n");
 }
 
 
