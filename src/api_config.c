@@ -94,15 +94,15 @@ bool api_config_read_file(char *  path)
 	if (!json)
         return false;
 	
-	memset(api_config.config_file_path, 0, sizeof(api_config.config_file_path));
-	strcpy(api_config.config_file_path, path);
+	memset(m_api_config.config_file_path, 0, sizeof(m_api_config.config_file_path));
+	strcpy(m_api_config.config_file_path, path);
 
 	char * key_engine_flags = strstr(json, CONFIG_FILE_KEY_ENGINE_FLAGS);
 	if (key_engine_flags)
 	{
 		key_engine_flags += strlen(CONFIG_FILE_KEY_ENGINE_FLAGS);
-		api_config.engine_flags = atoi(key_engine_flags);
-		printf("Engine flags result: %d \n", api_config.engine_flags);
+		m_api_config.engine_flags = atoi(key_engine_flags);
+		printf("Engine flags result: %d \n", m_api_config.engine_flags);
 	}
 
 	char * key_engine_benchmark = strstr(json, CONFIG_FILE_KEY_ENGINE_BENCHMARK);
@@ -116,8 +116,8 @@ bool api_config_read_file(char *  path)
 			return false;
 		
 		if (strstr(key_engine_benchmark, "true"))
-			api_config.engine_benchmark = true;
-		printf("benchmark result: %d\n", api_config.engine_benchmark);
+			m_api_config.engine_benchmark = true;
+		printf("benchmark result: %d\n", m_api_config.engine_benchmark);
 	}
 
 	char * key_bind_adress = strstr(json, CONFIG_FILE_KEY_BIND_ADDRESS);
@@ -127,13 +127,13 @@ bool api_config_read_file(char *  path)
 		end = strchr(key_bind_adress, '"');
 		if (end)
 		{
-			memset(api_config.bind_addr, 0, sizeof(api_config.bind_addr));
-			strncpy(api_config.bind_addr, key_bind_adress, end - key_bind_adress);
+			memset(m_api_config.bind_addr, 0, sizeof(m_api_config.bind_addr));
+			strncpy(m_api_config.bind_addr, key_bind_adress, end - key_bind_adress);
 		}
 		else
 			return false;
 
-		printf("Bind address result: %s\n", api_config.bind_addr);
+		printf("Bind address result: %s\n", m_api_config.bind_addr);
 	}
 
 	char * key_log_path = strstr(json, CONFIG_FILE_KEY_LOG_PATH);
@@ -143,21 +143,21 @@ bool api_config_read_file(char *  path)
 		end = strchr(key_log_path, '"');
 		if (end)
 		{
-			memset(api_config.log_file_name, 0, sizeof(api_config.log_file_name));
-			strncpy(api_config.log_file_name, key_log_path, end - key_log_path);
+			memset(m_api_config.log_file_name, 0, sizeof(m_api_config.log_file_name));
+			strncpy(m_api_config.log_file_name, key_log_path, end - key_log_path);
 		}
 		else
 			return false;
 
-		printf("log path result: %s\n", api_config.log_file_name);
+		printf("log path result: %s\n", m_api_config.log_file_name);
 	}
 
 	char * key_port = strstr(json, CONFIG_FILE_KEY_PORT);
 	if (key_port)
 	{
 		key_port += strlen(CONFIG_FILE_KEY_PORT);
-		api_config.wayuu_service_port = atoi(key_port);
-		printf("Port result: %d\n", api_config.wayuu_service_port);
+		m_api_config.wayuu_service_port = atoi(key_port);
+		printf("Port result: %d\n", m_api_config.wayuu_service_port);
 	}
 
 	/* If all is OK replace the default with the updated config */
