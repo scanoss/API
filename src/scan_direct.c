@@ -157,13 +157,12 @@ void scan_direct_scan(api_request *req, char *path, char *assets, char *scantype
     free(db_name);
   }
 
-  if(flags > 0) {
-    char *sflags;
-    asprintf(&sflags, "%u", api_config.engine_flags | flags);
-    string_fast_strcat(command, " -F");
-    string_fast_strcat(command, sflags);
-    free(sflags);
-  }
+  char *sflags;
+  asprintf(&sflags, "%u", api_config.engine_flags | flags);
+  string_fast_strcat(command, " -F");
+  string_fast_strcat(command, sflags);
+  free(sflags);
+
   string_fast_strcat(command, " ");
   string_fast_strcat(command, path);
 
